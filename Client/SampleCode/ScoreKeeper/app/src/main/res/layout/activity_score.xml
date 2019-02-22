@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="schellekens.scorekeeper.ScoreActivity">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:weightSum="100"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tbMain"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        </android.support.v7.widget.Toolbar>
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvUsCaption"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5"
+                android:text="@string/us_text"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvThemCaption"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5"
+                android:text="@string/them_text"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <!-- Plus Buttons -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAddUs"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.50"
+                android:background="@drawable/plus_button"
+                android:elevation="0dp"
+                android:text="+"
+                android:textColor="#fff"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnAddThem"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.50"
+                android:background="@drawable/plus_button"
+                android:tag="+"
+                android:text="+"
+                android:textColor="#fff"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <!-- Scores -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvUs"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.50"
+                android:background="@drawable/score_textview"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="150sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvThem"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.50"
+                android:background="@drawable/score_textview"
+                android:textAlignment="center"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textSize="150sp"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <!-- Minus Buttons -->
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnSubUs"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5"
+                android:background="@drawable/minus_button"
+                android:text="-"
+                android:textColor="#fff"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnSubThem"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.50"
+                android:background="@drawable/minus_button"
+                android:text="-"
+                android:textColor="#fff"
+                android:textSize="30sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="schellekens.mqttgeofence.fragments.BrokerFragment">
+
+    <Button
+            android:id="@+id/btnSetLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/set_location"/>
+
+    <TextView
+            android:id="@+id/tvLatitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12pt"
+            tools:text="Latitude"/>
+
+    <TextView
+            android:id="@+id/tvLongitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12pt"
+            tools:text="Longitude"/>
+
+    <EditText
+            android:id="@+id/etRadius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fence_radius" />
+
+    <Button
+            android:id="@+id/btnSaveFence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Fence"/>
+
+</LinearLayout>

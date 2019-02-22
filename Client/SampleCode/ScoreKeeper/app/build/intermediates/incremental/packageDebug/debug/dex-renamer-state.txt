@@ -1,0 +1,4 @@
+#Fri Dec 08 11:58:12 CST 2017
+base.0=C\:\\Users\\bschellekens\\Google Drive\\CPRE_388_Code\\ScoreKeeper\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex

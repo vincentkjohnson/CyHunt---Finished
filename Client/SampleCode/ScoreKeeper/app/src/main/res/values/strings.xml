@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Score Keeper</string>
+    <string name="us_text">US</string>
+    <string name="them_text">THEM</string>
+    <string name="action_refresh">Update from Server</string>
+    <string name="action_team">Select Team</string>
+    <string name="action_game">Select Game</string>
+    <string name="action_save_game">Submit Score</string>
+    <string name="action_select_color">Select Team Color</string>
+    <string name="save_button_text">Save</string>
+
+    <string name="title_activity_select">SelectActivity</string>
+</resources>
