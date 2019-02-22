@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="schellekens.scorekeeper.ColorActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        tools:layout_editor_absoluteX="45dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <!-- Red -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <SeekBar
+                android:id="@+id/sbRed"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.9"
+                android:background="@color/red"
+                android:max="255"
+                tools:layout_editor_absoluteX="186dp"
+                tools:layout_editor_absoluteY="80dp"/>
+
+            <TextView
+                android:id="@+id/tvRed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_weight="0.1"
+                android:textAlignment="center"
+                android:textColor="#f00"
+                android:textStyle="bold"
+                tools:text="255"/>
+
+        </LinearLayout>
+
+        <!-- Green -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <SeekBar
+                android:id="@+id/sbGreen"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.9"
+                android:background="@color/green"
+                android:max="255"
+                tools:layout_editor_absoluteX="186dp"
+                tools:layout_editor_absoluteY="80dp"/>
+
+            <TextView
+                android:id="@+id/tvGreen"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_weight="0.1"
+                android:textAlignment="center"
+                android:textColor="#0f0"
+                android:textStyle="bold"
+                tools:text="255"/>
+
+        </LinearLayout>
+
+        <!-- Blue -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <SeekBar
+                android:id="@+id/sbBlue"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.9"
+                android:background="@color/blue"
+                android:max="255"
+                tools:layout_editor_absoluteX="186dp"
+                tools:layout_editor_absoluteY="80dp"/>
+
+            <TextView
+                android:id="@+id/tvBlue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_weight="0.1"
+                android:textAlignment="center"
+                android:textColor="#00f"
+                android:textStyle="bold"
+                tools:text="255"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvColorHex"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            tools:text="#FFFFFF"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_button_text"
+            android:textSize="30sp"/>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

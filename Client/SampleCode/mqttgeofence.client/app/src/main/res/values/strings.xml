@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MQTT Geo-Fence</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fence_radius">Fence Radius</string>
+    <string name="set_location">Set Location</string>
+    <string name="broker_uri">Broker URI</string>
+    <string name="port">Port</string>
+    <string name="connect">Connect</string>
+    <string name="client_id">Client ID</string>
+</resources>
