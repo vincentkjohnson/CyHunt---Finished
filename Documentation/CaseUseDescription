@@ -8,3 +8,7 @@ that the user is not close enough. The faster the user can correctly go to a loc
 the button to check the location, the more points the user gets. The score is tracked in a 
 leaderboard, and the user can see how well he or she is doing against others. 
 The main goal is fulfilled when the user gets more points. 
+
+If the user has not joined the game, they will be greeted with a simple Textbox and a button to put
+themselves to the game (UseCaseDescription2.png). This ensures that they will be ranked and possibly in the 
+leaderboard.
