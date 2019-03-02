@@ -1,5 +1,7 @@
 # API Reference
 
+__Base Url__: [http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080](http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080), all relative URLs below are relative to this base URL.
+
 ## UserController
 
 Used for user centric calls.
