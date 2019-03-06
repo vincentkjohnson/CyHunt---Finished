@@ -38,6 +38,7 @@ public class UserController {
     	userRepository.save(newUser);
     	return "New User " + name+ " registered.";
     }
+
     @GetMapping(path = "/login")
     public @ResponseBody String login(@RequestParam String name,@RequestParam String email, @RequestParam String password,Model model)
     {

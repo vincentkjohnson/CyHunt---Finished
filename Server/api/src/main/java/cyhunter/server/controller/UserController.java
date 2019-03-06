@@ -3,7 +3,11 @@ package cyhunter.server.controller;
 import cyhunter.server.businesslogic.IUserLogic;
 import cyhunter.server.businesslogic.UserLogic;
 import cyhunter.server.models.AddUserResult;
+import cyhunter.server.models.LoginUserResult;
 import cyhunter.server.models.User;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.web.bind.annotation.*;
 
 /*
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/user")
+@Api(value="users", description="Operations pertaining to Users")
 public class UserController {
 
     private IUserLogic userLogic;
@@ -28,8 +33,29 @@ public class UserController {
         this.userLogic = usrLogic;
     }
 
-    @PostMapping(path="/add")
+    /***
+     * Attempts to add a new User to the system
+     * @param user The User object to add: { username: String, password: String }
+     * @return A message indicating the result of the operation
+     */
+    @PostMapping(path="/add", produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Succesfully retrieved result message.")
+    })
     public AddUserResult addUser(@RequestBody User user){
         return this.userLogic.addNewUser(user.getUsername(), user.getPassword());
+    }
+
+    /***
+     * Attempts to log a User into the system
+     * @param user The User object to login: { username: String, password: String }
+     * @return A message indicating the result of the operation
+     */
+    @GetMapping(path="/login", produces = "application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Succesfully retrieved result message.")
+    })
+    public LoginUserResult loginUser(@RequestBody User user){
+        return this.userLogic.loginUser(user.getUsername(), user.getPassword());
     }
 }

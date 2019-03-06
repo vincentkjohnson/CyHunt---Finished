@@ -1,5 +1,6 @@
 package cyhunter.server.businesslogic;
 
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import cyhunter.server.models.LeaderBoardEntry;
 import cyhunter.server.models.UpdateUserScoreResult;
 
@@ -19,11 +20,19 @@ public class ScoreLogic implements IScoreLogic {
 
     @Override
     public int getDailyUserScore(int userId){
+        if(userId == 10){
+            throw new IllegalArgumentException("Could not find User with ID: " + userId );
+        }
+
         return 10;
     }
 
     @Override
     public int getWeeklyUserScore(int userId){
+        if(userId == 10){
+            throw new IllegalArgumentException("Could not find User with ID: " + userId);
+        }
+
         return 50;
     }
 

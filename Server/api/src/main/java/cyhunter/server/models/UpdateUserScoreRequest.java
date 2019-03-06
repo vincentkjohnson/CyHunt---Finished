@@ -1,6 +1,6 @@
 package cyhunter.server.models;
 
-public class UpdateUserScore {
+public class UpdateUserScoreRequest {
 
     private int userId;
 

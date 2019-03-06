@@ -1,14 +1,16 @@
 # API Reference
 
 __Base Url__: [http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080](http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080), all relative URLs below are relative to this base URL.
+__Swagger Url__: [http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/swagger-ui.html](http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/swagger-ui.html)
 
 ## UserController
 
 Used for user centric calls.
 
-Relative URL  | HTTP Method | Message Body                                           | Result
---------------|:-----------:|--------------------------------------------------------|---
-/user/adduser | POST        | { "username": "_username_", "password": "_password_" } | { "success:" _boolean_, "message": "_string_" }
+Relative URL    | HTTP Method | Message Body                                           | Result
+----------------|:-----------:|--------------------------------------------------------|---
+/user/adduser   | POST        | { "username": "_username_", "password": "_password_" } | { "success:" _boolean_, "message": "_string_" }
+/user/loginuser | GET         | { "username": "_username_", "password": "_password_" } | { "success:" _boolean_, "message": "_string_" }
 
 ### UserController Test Results
 
@@ -31,6 +33,27 @@ Otherwise:
     "message": "User username added succesfully."
 }
 ```
+
+#### Login User
+
+If username = "bob" Then:
+
+```json
+{
+    "success": false,
+    "message": "User bob already exists."
+}
+```
+
+Otherwise:
+
+```json
+{
+    "success": true,
+    "message": "User username added succesfully."
+}
+```
+
 
 ## ScoreController
 
