@@ -5,7 +5,7 @@ import cyhunter.server.models.UpdateUserScoreResult;
 
 import java.util.Set;
 
-public interface IScoreLogic {
+public interface IGameLogic {
     Set<LeaderBoardEntry> getWeeklyLeaderBoard();
 
     Set<LeaderBoardEntry> getDailyLeaderBoard();

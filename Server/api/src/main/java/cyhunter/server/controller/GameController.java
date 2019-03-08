@@ -1,7 +1,7 @@
 package cyhunter.server.controller;
 
-import cyhunter.server.businesslogic.IScoreLogic;
-import cyhunter.server.businesslogic.ScoreLogic;
+import cyhunter.server.businesslogic.IGameLogic;
+import cyhunter.server.businesslogic.GameLogic;
 import cyhunter.server.models.LeaderBoardEntry;
 import cyhunter.server.models.UpdateUserScoreRequest;
 import cyhunter.server.models.UpdateUserScoreResult;
@@ -15,17 +15,17 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Set;
 
 @RestController
-@RequestMapping(path="/score")
-@Api(value="scores", description="Operations pertaining to User's Scores")
-public class ScoreController {
+@RequestMapping(path="/game")
+@Api(value="scores", description="Operations pertaining to Game play")
+public class GameController {
 
-    private IScoreLogic scoreLogic;
+    private IGameLogic scoreLogic;
 
-    public ScoreController(){
-        this.scoreLogic = new ScoreLogic();
+    public GameController(){
+        this.scoreLogic = new GameLogic();
     }
 
-    public ScoreController(IScoreLogic sl){
+    public GameController(IGameLogic sl){
         this.scoreLogic = sl;
     }
 
@@ -60,7 +60,7 @@ public class ScoreController {
      * @param uId The Id of the User to get the daily Score for
      * @return An int
      */
-    @GetMapping(path="/dailyuser/{uId}", produces = "application/json")
+    @GetMapping(path="/dailyuserscore/{uId}", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code=200, message="Succesfully retrieved score"),
             @ApiResponse(code=404, message = "Could not find User with that Id")
@@ -80,7 +80,7 @@ public class ScoreController {
      * @param uId The Id of the User requesting the weekly score
      * @return An int
      */
-    @GetMapping(path="/weeklyuser/{uId}", produces = "application/json")
+    @GetMapping(path="/weeklyuserscore/{uId}", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code=200, message="Succesfully retrieved score"),
             @ApiResponse(code=404, message = "Could not find User with that Id")
@@ -95,7 +95,7 @@ public class ScoreController {
      * @return A JSON serialized object containing the result of the operation, the points earned, the User's daily
      * and weekly Scores and a response message.
      */
-    @PutMapping(path="/updateuser", produces = "application/json")
+    @PutMapping(path="/updateuserscore", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code=200, message="Succesfully retrieved score"),
             @ApiResponse(code=404, message = "Could not find User with that Id")
