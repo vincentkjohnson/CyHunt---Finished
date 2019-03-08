@@ -3,6 +3,7 @@ package cyhunter.server.controller;
 import cyhunter.server.businesslogic.IGameLogic;
 import cyhunter.server.businesslogic.GameLogic;
 import cyhunter.server.models.LeaderBoardEntry;
+import cyhunter.server.models.Objective;
 import cyhunter.server.models.UpdateUserScoreRequest;
 import cyhunter.server.models.UpdateUserScoreResult;
 import io.swagger.annotations.Api;
@@ -102,5 +103,17 @@ public class GameController {
     })
     public UpdateUserScoreResult updateUserScore(@RequestBody UpdateUserScoreRequest uus){
         return this.scoreLogic.updateUserScore(uus.getUserId(), uus.getLocationId());
+    }
+
+    /***
+     * Gets the current Game's objectives along with their current point value
+     * @return A Set of Objectives
+     */
+    @GetMapping(path="/objectives", produces = "application/json")
+    @ApiResponses({
+            @ApiResponse(code=200, message="Succesfully retrieved objectives")
+    })
+    public Set<Objective> getGameObjectives(){
+        return this.scoreLogic.getGameObjectives();
     }
 }
