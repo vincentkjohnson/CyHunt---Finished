@@ -17,10 +17,10 @@ public class UserLogic implements IUserLogic {
     @Override
     public AddUserResult addNewUser(String username, String password) {
         if(username.equals("bob")){
-            return new AddUserResult(false, "User " + username + " already exists.");
+            return new AddUserResult(false, String.format("User %s already exists", username));
         }
 
-        return new AddUserResult(true, "User " + username + " added succesfully.");
+        return new AddUserResult(true, String.format("User %s added succesfully", username));
     }
 
     /***
@@ -32,9 +32,9 @@ public class UserLogic implements IUserLogic {
     @Override
     public LoginUserResult loginUser(String username, String password){
         if(username.equals("bob")){
-            return new LoginUserResult(false, "User " + username + " already exists.");
+            return new LoginUserResult(false, String.format("User %s does not exist", username));
         }
 
-        return new LoginUserResult(true, "User " + username + " added succesfully.");
+        return new LoginUserResult(true, String.format("User %s has logged in succesfully", username));
     }
 }
