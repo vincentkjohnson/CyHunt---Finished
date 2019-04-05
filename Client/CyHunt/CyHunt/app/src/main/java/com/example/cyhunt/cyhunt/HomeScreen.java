@@ -24,7 +24,8 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
+        //baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
+        baseURL = "http://vincentj@cs319-055.misc.iastate.edu/home/vincentj/rest.php";
 
         editText_login_username = (EditText) findViewById(R.id.userName);
         editText_login_password = (EditText) findViewById(R.id.passwordBox);
@@ -38,7 +39,7 @@ public class HomeScreen extends AppCompatActivity {
                     password = editText_login_password.getText().toString();
 
                     ApiAuthenticationClient apiAuthenticationClient = new ApiAuthenticationClient(baseURL, username, password);
-                    apiAuthenticationClient.setURLResrouce("user/add");
+                    //apiAuthenticationClient.setURLResrouce("user/add");
                     AsyncTask<Void, Void, String> execute = new ExecuteOperation(apiAuthenticationClient);
                     execute.execute();
                 } catch (Exception e) {
@@ -81,7 +82,7 @@ public class HomeScreen extends AppCompatActivity {
             super.onPostExecute(result);
 
             // Login Success
-            if (isValidCredentials.contains("true")) {
+            if (isValidCredentials.equals("true")) {
                 openMainActivity();
             }
             // Login Failure
