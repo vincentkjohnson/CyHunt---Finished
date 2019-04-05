@@ -8,6 +8,7 @@ import cyhunter.server.models.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /*
@@ -23,11 +24,8 @@ import org.springframework.web.bind.annotation.*;
 @Api(value="users", description="Operations pertaining to Users")
 public class UserController {
 
+    @Autowired
     private IUserLogic userLogic;
-
-    public UserController(){
-        this.userLogic = new UserLogic();
-    }
 
     public UserController(IUserLogic usrLogic){
         this.userLogic = usrLogic;
