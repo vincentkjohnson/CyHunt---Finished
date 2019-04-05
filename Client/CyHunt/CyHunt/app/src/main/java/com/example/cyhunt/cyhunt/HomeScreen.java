@@ -86,8 +86,8 @@ public class HomeScreen extends AppCompatActivity {
             }
             // Login Failure
             else {
-                //Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), apiAuthenticationClient.getHeaderFields().toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), apiAuthenticationClient.getHeaderFields().toString(), Toast.LENGTH_LONG).show();
             }
         }
     }
