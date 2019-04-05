@@ -24,7 +24,7 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
 
-        baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080";
+        baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
 
         editText_login_username = (EditText) findViewById(R.id.userName);
         editText_login_password = (EditText) findViewById(R.id.passwordBox);
@@ -38,6 +38,7 @@ public class HomeScreen extends AppCompatActivity {
                     password = editText_login_password.getText().toString();
 
                     ApiAuthenticationClient apiAuthenticationClient = new ApiAuthenticationClient(baseURL, username, password);
+                    apiAuthenticationClient.setURLResrouce("user/add");
                     AsyncTask<Void, Void, String> execute = new ExecuteOperation(apiAuthenticationClient);
                     execute.execute();
                 } catch (Exception e) {
@@ -80,12 +81,13 @@ public class HomeScreen extends AppCompatActivity {
             super.onPostExecute(result);
 
             // Login Success
-            if (isValidCredentials.equals("true")) {
+            if (isValidCredentials.contains("true")) {
                 openMainActivity();
             }
             // Login Failure
             else {
-                Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), apiAuthenticationClient.getHeaderFields().toString(), Toast.LENGTH_LONG).show();
             }
         }
     }
