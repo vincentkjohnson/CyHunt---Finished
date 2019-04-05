@@ -14,46 +14,7 @@ Relative URL    | HTTP Method | Message Body                                    
 
 ### UserController Test Results
 
-#### Add User
-
-If username = "bob" Then:
-
-```json
-{
-    "success": false,
-    "message": "User bob already exists."
-}
-```
-
-Otherwise:
-
-```json
-{
-    "success": true,
-    "message": "User username added succesfully."
-}
-```
-
-#### Login User
-
-If username = "bob" Then:
-
-```json
-{
-    "success": false,
-    "message": "User bob does not exist."
-}
-```
-
-Otherwise:
-
-```json
-{
-    "success": true,
-    "message": "User <username> logged in succesfully."
-}
-```
-
+This has been completed all the way through to the database so the tests have been removed.
 
 ## GameController
 
