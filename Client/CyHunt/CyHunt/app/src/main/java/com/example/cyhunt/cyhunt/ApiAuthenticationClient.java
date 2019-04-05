@@ -21,7 +21,7 @@ public class ApiAuthenticationClient {
     private String username;
     private String password;
     private String urlResource;
-    private String httpMethod;
+    private String httpMethod; //GET, POST, PUT, DELETE
     private String urlPath;
     private String lastResponse;
     private String payload;
@@ -39,7 +39,7 @@ public class ApiAuthenticationClient {
         this.username = username;
         this.password = password;
         this.urlResource = "";
-        this.httpMethod = "GET";
+        this.httpMethod = "POST";
         parameters = new HashMap<>();
         lastResponse = "";
         payload = "";
@@ -254,4 +254,6 @@ public class ApiAuthenticationClient {
 
         return outputStringBuilder.toString();
     }
+
+
 }
