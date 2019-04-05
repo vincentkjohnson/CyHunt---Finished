@@ -39,7 +39,7 @@ public class ApiAuthenticationClient {
         this.username = username;
         this.password = password;
         this.urlResource = "";
-        this.httpMethod = "POST";
+        this.httpMethod = "GET";
         parameters = new HashMap<>();
         lastResponse = "";
         payload = "";
