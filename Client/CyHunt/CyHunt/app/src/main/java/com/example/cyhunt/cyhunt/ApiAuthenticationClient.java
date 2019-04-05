@@ -10,10 +10,17 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.security.cert.X509Certificate;
 
 public class ApiAuthenticationClient {
 
@@ -21,12 +28,13 @@ public class ApiAuthenticationClient {
     private String username;
     private String password;
     private String urlResource;
-    private String httpMethod;
+    private String httpMethod; //GET, POST, PUT, DELETE
     private String urlPath;
     private String lastResponse;
     private String payload;
     private HashMap<String, String> parameters;
     private Map<String, List<String>> headerFields;
+
 
     /**
      *
@@ -39,7 +47,7 @@ public class ApiAuthenticationClient {
         this.username = username;
         this.password = password;
         this.urlResource = "";
-        this.httpMethod = "GET";
+        this.httpMethod = "POST";
         parameters = new HashMap<>();
         lastResponse = "";
         payload = "";
@@ -196,9 +204,9 @@ public class ApiAuthenticationClient {
         try {
             StringBuilder urlString = new StringBuilder(baseURL + urlResource);
 
-            if (!urlPath.equals("")){
-                urlString.append("/" + urlPath);
-            }
+//            if (!urlPath.equals("")){
+//                urlString.append("/" + urlPath);
+//            }
 
             if (parameters.size() > 0 && httpMethod.equals("GET")) {
                 payload = getPayloadAsString();
@@ -209,9 +217,10 @@ public class ApiAuthenticationClient {
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod(httpMethod);
-            connection.setRequestProperty("Authorization", "Basic");
+            // connection.setRequestProperty("Authorization", "Basic");
             connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Content-Type", "text/plain");
+            connection.setRequestProperty("Content-Type", "applicatoin/json");
+            //connection.setSSLSocketFactory();
 
             if (httpMethod.equals("POST") || httpMethod.equals("PUT")) {
                 payload = getPayloadAsString();
@@ -219,6 +228,7 @@ public class ApiAuthenticationClient {
                 connection.setDoInput(true);
                 connection.setDoOutput(true);
 
+                payload = "{ \"username\": \"test\", \"password\": \"pass\" }";
                 try {
                     OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
                     writer.write(payload);
@@ -254,4 +264,6 @@ public class ApiAuthenticationClient {
 
         return outputStringBuilder.toString();
     }
+
+
 }
