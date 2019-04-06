@@ -55,7 +55,17 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Succesfully retrieved result message.")
     })
-    public LoginUserResult loginUser(@RequestBody User user){
+        @GetMapping(path="/login/{username}/{password}", produces = "application/json")
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Succesfully retrieved result message.")
+    })
+    public LoginUserResult loginUser(
+        @PathVariable(value="username") final String uname,
+        @PathVariable(value="password") final String pwd){
+        User user = new User();
+        user.setUsername(uname);
+        user.setPassword(pwd);
+
         return this.userLogic.loginUser(user.getUsername(), user.getPassword());
     }
 }
