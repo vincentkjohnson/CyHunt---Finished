@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import java.util.HashMap;
 
+import android.widget.EditText;
 import android.widget.Toast;
 import kotlin.Metadata;
 import kotlin.jvm.internal.Intrinsics;
@@ -56,12 +57,21 @@ public class MainActivity extends AppCompatActivity implements ApiResultHandler 
         this.setSupportActionBar(tBar);
 
         ((FloatingActionButton)this.findViewById(id.fab)).setOnClickListener((OnClickListener)(new OnClickListener() {
-        public final void onClick(View v) {
-            view = v;
-            // connector.AddUser("Jane", "123456");
-            connector.LoginUser("Jane", "123456");
-        }
-    }));
+            public final void onClick(View v) {
+                view = v;
+                EditText txtUser = (EditText)findViewById(id.txtUsername);
+                EditText txtPassword = (EditText)findViewById(id.txtPassword);
+                connector.LoginUser(txtUser.getText().toString(), txtPassword.getText().toString());
+        }}));
+
+        ((FloatingActionButton)this.findViewById(id.fab2)).setOnClickListener((OnClickListener)(new OnClickListener() {
+            public final void onClick(View v) {
+                view = v;
+                EditText txtUser = (EditText)findViewById(id.txtUsername);
+                EditText txtPassword = (EditText)findViewById(id.txtPassword);
+                connector.AddUser(txtUser.getText().toString(), txtPassword.getText().toString());
+            }
+        }));
     }
 
     public boolean onCreateOptionsMenu(@NotNull Menu menu) {

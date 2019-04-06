@@ -11,6 +11,7 @@ public class ApiIConnector implements GetTask.GetResultHandler {
     }
 
     private final String baseUrl = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
+    // private final String baseUrl = "http://10.0.2.2:8080/";
     private final String addUrl = baseUrl + "user/add";
     private final String loginUrl = baseUrl + "user/login";
     private ApiResultHandler resultHanlder;
@@ -23,9 +24,8 @@ public class ApiIConnector implements GetTask.GetResultHandler {
 
     // Calls LoginUser on the API
     public void LoginUser(String username, String password){
-        UserRequest req = new UserRequest(username, password);
         GetTask task = new GetTask(ApiIConnector.this);
-        task.execute(loginUrl, req.toJson(), "POST");
+        task.execute(loginUrl + "/" + username + "/" + password, "", "GET");
     }
 
     // Calls AddUser on the API

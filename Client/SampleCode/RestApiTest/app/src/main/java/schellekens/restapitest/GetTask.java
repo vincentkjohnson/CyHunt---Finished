@@ -24,31 +24,31 @@ public class GetTask extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        // If there is only one parameter, it's the URL
-        URL url;
-        String body;
         try {
             if (params.length == 3) {
 
-                url = new URL(params[0]);
-                body = params[1];
+                URL url = new URL(params[0]);
+                String body = params[1];
+                String method = params[2];
 
                 // Setup connection
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod(params[2]);
-                conn.setRequestProperty("Content-length", body.getBytes().length + "");
-                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setRequestMethod(method);
                 conn.setRequestProperty("Accept", "application/json");
                 conn.setUseCaches(false);
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
 
-                // Set content body
-                OutputStream os = conn.getOutputStream();
-                os.write(body.getBytes("UTF-8"));
-                os.close();
+                if(body.length() > 0 && !method.equals("GET")) {
+                    conn.setRequestProperty("Content-length", body.getBytes().length + "");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
 
-                conn.connect();
+                    // Set content body
+                    OutputStream os = conn.getOutputStream();
+                    os.write(body.getBytes("UTF-8"));
+                    os.close();
+                    conn.connect();
+                }
 
                 int responseCode = conn.getResponseCode();
 
