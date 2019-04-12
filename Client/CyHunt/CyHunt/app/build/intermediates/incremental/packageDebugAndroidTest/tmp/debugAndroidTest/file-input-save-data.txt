@@ -1,0 +1,11 @@
+#Internal package file, do not edit.
+#Sun Apr 07 19:06:34 CDT 2019
+1.base=C\:\\Users\\Riku Morishima\\Desktop\\School\\CS319 Android Development\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeProjectDexDebugAndroidTest\\out
+0.baseType=DIRECTORY
+1.baseType=DIRECTORY
+count=2
+1.set=DEX
+0.path=classes.dex
+0.set=DEX
+0.base=C\:\\Users\\Riku Morishima\\Desktop\\School\\CS319 Android Development\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeExtDexDebugAndroidTest\\out
+1.path=classes.dex

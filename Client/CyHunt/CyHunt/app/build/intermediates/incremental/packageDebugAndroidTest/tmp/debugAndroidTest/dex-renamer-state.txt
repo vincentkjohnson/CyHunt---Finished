@@ -1,0 +1,7 @@
+#Sun Apr 07 19:06:34 CDT 2019
+base.0=C\:\\Users\\Riku Morishima\\Desktop\\School\\CS319 Android Development\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeProjectDexDebugAndroidTest\\out
+path.1=classes.dex
+renamed.1=classes2.dex
+path.0=classes.dex
+renamed.0=classes.dex
+base.1=C\:\\Users\\Riku Morishima\\Desktop\\School\\CS319 Android Development\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\dex\\debugAndroidTest\\mergeExtDexDebugAndroidTest\\out
