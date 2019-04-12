@@ -40,7 +40,7 @@ public class UserController {
      */
     @PostMapping(path="/add", produces = "application/json")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Succesfully retrieved result message.")
+        @ApiResponse(code = 200, message = "Succesfully retrieved result message.")
     })
     public AddUserResult addUser(@RequestBody User user){
         return this.userLogic.addNewUser(user.getUsername(), user.getPassword());
@@ -48,14 +48,11 @@ public class UserController {
 
     /***
      * Attempts to log a User into the system
-     * @param user The User object to login: { username: String, password: String }
+     * @param uname The User name of the user to login
+     * @param pwd the Password of the User to login
      * @return A message indicating the result of the operation
      */
-    @GetMapping(path="/login", produces = "application/json")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Succesfully retrieved result message.")
-    })
-        @GetMapping(path="/login/{username}/{password}", produces = "application/json")
+    @GetMapping(path="/login/{username}/{password}", produces = "application/json")
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Succesfully retrieved result message.")
     })
