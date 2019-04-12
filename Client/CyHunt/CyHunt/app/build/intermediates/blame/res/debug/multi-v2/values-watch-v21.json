@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\dream\\AndroidStudioProjects\\CyHunt\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-watch-v21\\values-watch-v21.xml",
+            "outputFile": "C:\\Users\\dream\\Desktop\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-watch-v21\\values-watch-v21.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\dream\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\c750a3da2abcaea519784d13a2cfc08a\\res\\values-watch-v21\\values-watch-v21.xml",
+                    "source": "C:\\Users\\dream\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\11ab046710fd786841a2dc0035fb4929\\res\\values-watch-v21\\values-watch-v21.xml",
                     "from": {
                         "startLines": "2,6,10",
                         "startColumns": "4,4,4",

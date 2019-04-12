@@ -10,9 +10,8 @@
 
     <ListView
         android:layout_width="match_parent"
+        android:id="@+id/locations"
         android:layout_height="0dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp"
         android:layout_weight="1"/>
@@ -31,8 +30,8 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="25dp"
-            android:text="Check Location" />
+            android:layout_marginTop="25dp" />
+            android:text="@string/check_location" />
 
         <Button
             android:id="@+id/leaderboard"
@@ -40,13 +39,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="25dp"
-            android:text="Leaderboard" />
+            android:layout_marginStart="25dp" />
+            android:text="@string/leaderboard" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:id="@+id/score" />
+            android:text="@string/score" />
 
     </RelativeLayout>
 </LinearLayout>

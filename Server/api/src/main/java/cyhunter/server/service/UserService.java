@@ -10,16 +10,22 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-    UserRepository userRepository;
-    public List<User> AllUsers(){return userRepository.findAll();}
+    private UserRepository userRepository;
+
+    public List<User> AllUsers(){
+        return userRepository.findAll();
+    }
 
     public User findByUserName(String username){
-        return userRepository.findByUsername(username);
+        User result = userRepository.findByUsername(username);
+        return result;
     }
+
     public User saveUser(User newUser)
     {
         return userRepository.save(newUser);
     }
+
     public Boolean deleteUserByUserName(String username)
     {
         User target = findByUserName(username);
