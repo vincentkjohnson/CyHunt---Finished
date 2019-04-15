@@ -9,6 +9,8 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
     private final String baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
     private final String add = baseURL + "user/add";
     private final String login = baseURL + "user/login";
+    private final String objectives = baseURL + "game/objectives";
+
     private ApiResultHandler resultHandler;
 
     public ApiAuthenticationClient(ApiResultHandler handler) {
@@ -25,6 +27,11 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
         UserRequest req = new UserRequest(username, password);
         GetTask task = new GetTask(ApiAuthenticationClient.this);
         task.execute(add, req.toJson(), "POST");
+    }
+
+    public void getObjectives() {
+        GetTask task = new GetTask(ApiAuthenticationClient.this);
+        task.execute(objectives, "GET");
     }
 
     @Override
