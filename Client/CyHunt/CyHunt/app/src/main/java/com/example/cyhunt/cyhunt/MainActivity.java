@@ -5,8 +5,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -42,7 +44,22 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /**
+         * Push checkLocation button,
+         * compare userLocation with locations from building location
+         */
         checkLocation = (Button) findViewById(R.id.check_location);
+        checkLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    UserLocation location = new UserLocation();
+                    //Compare location
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         leaderBoard = (Button) findViewById(R.id.leaderboard);
 
         scoreText = (TextView) findViewById(R.id.score);
