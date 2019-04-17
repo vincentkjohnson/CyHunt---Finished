@@ -65,7 +65,7 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
                     if (response.getMessage().contains("does not exist")) {
                         try {
-                            connector.Adduser(editText_login_username.getText().toString(), editText_login_password.getText().toString());
+                            connector.AddUser(editText_login_username.getText().toString(), editText_login_password.getText().toString());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
