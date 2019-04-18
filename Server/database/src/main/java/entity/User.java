@@ -1,6 +1,8 @@
 package entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -17,11 +19,16 @@ public class User {
     @Column(name = "password")
     private String password;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "USER-USERGAMES", joinColumns = {
+            @JoinColumn(name = "USER_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "USERGAMES_ID", referencedColumnName = "ID")})
+    private List<UserGames> userGameses;
+
     @Column(name = "totalpoints")
     private int points;
 
     public User(){
-
     }
 
 
@@ -47,7 +54,8 @@ public class User {
         this.password = password;
     }
 
-
+    public List<UserGames> getUserGameses(){return userGameses;}
+    public void setUserGameses(List<UserGames> userGameses){this.userGameses = userGameses;}
     public String getUserName() {
         return username;
     }
@@ -59,6 +67,9 @@ public class User {
     public int getPoints(){return this.points;}
     public void setPoints(int points){this.points=points;}
     public void addPoints(int points){this.points =this.points+points;}
+    public void reducePoint(int point) {
+        this.points -= point;
+    }
     @Override
     public String toString() {
         return "User{" +

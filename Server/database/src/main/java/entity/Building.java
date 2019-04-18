@@ -2,6 +2,7 @@ package entity;
 
 //This table should never been modify unless someday we will decide we need to add more buildings. This table include all the buildings.
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "building")
@@ -31,6 +32,14 @@ public class Building {
     private String longitude;
 
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "Building-GameLocations", joinColumns = {
+            @JoinColumn(name = "BuildingID", referencedColumnName = "ID")}, inverseJoinColumns = {
+            @JoinColumn(name = "GameLocationID", referencedColumnName = "ID")})
+    private List<GameLocations> gameLocationsList;
+
+
+
     public Building(){}
     public Building(String buildingname,String abbreviation,int yearbuilt,String address,String lattitude,String longitude){
         this.buildingname = buildingname;
@@ -47,6 +56,8 @@ public class Building {
     public String getAddress(){return address;}
     public String getLattitude(){return lattitude;}
     public String getLongitude(){return longitude;}
+    public List<GameLocations> getGameLocationsList(){return this.gameLocationsList;}
+    public void setGameLocationsList(List<GameLocations> gameLocationsList){this.gameLocationsList = gameLocationsList;}
 
     public boolean equal(Building target)
     {
