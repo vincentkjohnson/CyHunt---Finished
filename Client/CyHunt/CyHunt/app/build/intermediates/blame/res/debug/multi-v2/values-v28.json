@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\dream_000\\Desktop\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v28\\values-v28.xml",
+            "outputFile": "C:\\Users\\dream\\Desktop\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v28\\values-v28.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\dream_000\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\b43e2b667a40672e16a2e0477a77ddf0\\res\\values-v28\\values-v28.xml",
+                    "source": "C:\\Users\\dream\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\11ab046710fd786841a2dc0035fb4929\\res\\values-v28\\values-v28.xml",
                     "from": {
                         "startLines": "2,3,4,8",
                         "startColumns": "4,4,4,4",

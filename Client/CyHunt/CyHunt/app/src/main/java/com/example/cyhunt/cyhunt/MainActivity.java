@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements Runnable {
 
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity implements Runnable {
     private Button checkLocation;
     private Button leaderBoard;
     private TextView scoreText;
+
+    private List<Objective> objectives = new Objective().getObjectives();
 
     ArrayAdapter adapter;
     /**
