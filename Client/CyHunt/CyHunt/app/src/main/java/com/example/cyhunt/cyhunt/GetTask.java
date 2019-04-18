@@ -87,6 +87,7 @@ public class GetTask extends AsyncTask<String, Integer, String> {
 
     public interface GetResultHandler {
         void getResult(String result);
+        void getResultArray(String result);
     }
 
 }
