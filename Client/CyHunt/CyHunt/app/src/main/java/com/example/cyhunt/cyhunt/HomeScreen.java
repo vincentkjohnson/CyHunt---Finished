@@ -38,6 +38,7 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
                     editText_login_username = (EditText) findViewById(R.id.userName);
                     editText_login_password = (EditText) findViewById(R.id.passwordBox);
                     connector.LoginUser(editText_login_username.getText().toString(), editText_login_password.getText().toString());
+                    connector.getObjectives();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -53,6 +54,7 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
     }
 
 
+    @Override
     public void handleResult(final UserResponse response) {
         if (response != null) {
             parent.runOnUiThread(new Runnable() {
@@ -69,6 +71,20 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void handleResultArray(final ObjectiveResponse response) {
+        if (response != null) {
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (response.isSuccess()) {
+                        System.out.print(response.getMessage());
                     }
                 }
             });

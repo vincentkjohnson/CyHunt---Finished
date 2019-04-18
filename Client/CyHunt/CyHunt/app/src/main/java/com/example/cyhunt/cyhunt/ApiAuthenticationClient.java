@@ -6,6 +6,7 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
 
     interface ApiResultHandler {
         void handleResult(UserResponse response);
+        void handleResultArray(ObjectiveResponse response);
     }
 
     private final String baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
@@ -39,5 +40,10 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
     @Override
     public void getResult(String result) {
         this.resultHandler.handleResult(UserResponse.fromJson(result));
+    }
+
+    @Override
+    public void getResultArray(String result) {
+        this.resultHandler.handleResultArray(ObjectiveResponse.fromJson(result));
     }
 }

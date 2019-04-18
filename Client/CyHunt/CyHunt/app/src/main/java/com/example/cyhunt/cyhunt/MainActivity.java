@@ -1,21 +1,16 @@
 package com.example.cyhunt.cyhunt;
 
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements Runnable{
+public class MainActivity extends AppCompatActivity implements Runnable {
 
     static private String[] locationList;
 
@@ -73,14 +68,14 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         //(new Thread(new MainActivity())).start();
     }
 
+    @Override
+    public void run() {
+
+    }
+
     /**
      * used to update the location list whenever possible. Can also be used to notify anything
      * automatically
      */
-    @Override
-    public void run() {
-        while(true) {
-            adapter.notifyDataSetChanged();
-        }
-    }
+
 }
