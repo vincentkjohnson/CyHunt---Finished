@@ -7,8 +7,8 @@ import android.os.Bundle;
 
 public class UserLocation implements LocationListener {
 
-    public Double latitude;
-    public Double longitude;
+    private double latitude;
+    private double longitude;
 
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();

@@ -12,18 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ObjectiveScreen extends AppCompatActivity {
+public class ObjectiveScreen extends AppCompatActivity  {
 
     private ListView listView;
     private List<Objective> objectives = new ArrayList<>();
-    private double longitude = -93.65095;
-    private double latitude = 42.02965;
+    private double longitude = -93.64999;
+    private double latitude = 42.02595;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective_screen);
+
 
 
         listView = (ListView) findViewById(R.id.listview);
@@ -49,9 +52,9 @@ public class ObjectiveScreen extends AppCompatActivity {
                     }
                 }
                 if (distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude()) < 0.005) {
-                    Toast.makeText(getApplicationContext(), "You found the " + selectedObjective + "!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You found " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Not close enough to: " + selectedObjective + "!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Find " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                 }
             }
         });
