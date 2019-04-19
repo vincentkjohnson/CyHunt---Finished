@@ -2,6 +2,7 @@ package schellekens.restapitest;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import schellekens.restapitest.models.ResponseWrapper;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -14,7 +15,7 @@ import java.net.URL;
 /**
  * Handles HTTP communication
  */
-public class GetTask extends AsyncTask<String, Integer, String> {
+public class GetTask extends AsyncTask<String, Integer, ResponseWrapper> {
     private GetResultHandler mGetResultHandler;
     private final String TAG = this.getClass().getSimpleName();
 
@@ -23,13 +24,15 @@ public class GetTask extends AsyncTask<String, Integer, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
+    protected ResponseWrapper doInBackground(String... params) {
         try {
-            if (params.length == 3) {
+            if (params.length == 4) {
 
                 URL url = new URL(params[0]);
                 String body = params[1];
                 String method = params[2];
+                String returnType = params[3];
+                int rType = Integer.parseInt(returnType);
 
                 // Setup connection
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -53,9 +56,9 @@ public class GetTask extends AsyncTask<String, Integer, String> {
                 int responseCode = conn.getResponseCode();
 
                 if(responseCode == 200){
-                    this.mGetResultHandler.getResult(readStream(conn.getInputStream()));
+                    this.mGetResultHandler.getResult(readStream(conn.getInputStream()), rType);
                 } else {
-                    this.mGetResultHandler.getResult("Response Code: " + Integer.toString(responseCode));
+                    this.mGetResultHandler.getResult("Response Code: " + Integer.toString(responseCode), rType);
                 }
             }
         } catch (MalformedURLException e) {
@@ -64,12 +67,12 @@ public class GetTask extends AsyncTask<String, Integer, String> {
             Log.e(TAG, "IO Exception: " + e.getMessage());
         }
 
-        return "";
+        return new ResponseWrapper("Error", -1);
     }
 
     @Override
-    protected void onPostExecute(String result) {
-        mGetResultHandler.getResult(result);
+    protected void onPostExecute(ResponseWrapper resp) {
+        // mGetResultHandler.getResult(resp.response, resp.responseType);
     }
 
     private String readStream(InputStream inputStream) {
@@ -90,6 +93,6 @@ public class GetTask extends AsyncTask<String, Integer, String> {
     }
 
     public interface GetResultHandler {
-        void getResult(String result);
+        void getResult(String result, int resultType);
     }
 }

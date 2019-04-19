@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import java.util.HashMap;
+import java.util.List;
 
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import schellekens.restapitest.ApiIConnector.ApiResultHandler;
 import schellekens.restapitest.R.id;
+import schellekens.restapitest.models.Objective;
 import schellekens.restapitest.models.UserResponse;
 
 /*
@@ -36,13 +38,25 @@ public class MainActivity extends AppCompatActivity implements ApiResultHandler 
     private final ApiIConnector connector = new ApiIConnector((ApiResultHandler)this);
     private static MainActivity parent;
 
+    @Override
     public void handleResult(final UserResponse response) {
-
         if(response != null) {
             parent.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), response.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, response.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void handdleObjectiveListResult(final List<Objective> objectives) {
+        if(objectives != null && !objectives.isEmpty()){
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Objectives Retrieved", Toast.LENGTH_LONG).show();
                 }
             });
         }
@@ -69,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements ApiResultHandler 
                 view = v;
                 EditText txtUser = (EditText)findViewById(id.txtUsername);
                 EditText txtPassword = (EditText)findViewById(id.txtPassword);
-                connector.AddUser(txtUser.getText().toString(), txtPassword.getText().toString());
+                connector.getObjectives();
+                // connector.AddUser(txtUser.getText().toString(), txtPassword.getText().toString());
             }
         }));
     }
@@ -83,14 +98,14 @@ public class MainActivity extends AppCompatActivity implements ApiResultHandler 
     public boolean onOptionsItemSelected(MenuItem item) {
         Intrinsics.checkParameterIsNotNull(item, "item");
         boolean result;
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case 2131230742:
-            result = true;
-            break;
+                result = true;
+                break;
             default:
-            result = super.onOptionsItemSelected(item);
+                result = super.onOptionsItemSelected(item);
         }
 
         return result;
     }
-   }
+}
