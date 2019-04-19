@@ -48,7 +48,7 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
 
     public void openMainActivity() {
-        Intent intent = new Intent(  this, MainActivity.class);
+        Intent intent = new Intent(  this, ObjectiveScreen.class);
         startActivity(intent);
     }
 

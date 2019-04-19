@@ -6,22 +6,22 @@
     density="420dpi"
     format="10"
     plugin-version="3.3.2"
-    timestamp="1555604544686"
+    timestamp="1555645013358"
     token="-3762978274410710172"
     verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="935" />
+        duration="153" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="165" />
+        duration="37" />
     <task
         name="verifier"
-        duration="52" />
+        duration="4" />
 
     <artifact
         location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
@@ -62,7 +62,7 @@
 
     <build
         build-mode="FULL"
-        timestamp="1555604544686"
+        timestamp="1555645013358"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_1.apk"

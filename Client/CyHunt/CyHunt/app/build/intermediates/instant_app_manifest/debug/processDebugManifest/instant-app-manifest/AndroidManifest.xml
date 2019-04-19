@@ -9,6 +9,8 @@
         android:minSdkVersion="21"
         android:targetSdkVersion="28" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -23,6 +25,7 @@
         android:testOnly="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true" >
+        <activity android:name="com.example.cyhunt.cyhunt.ObjectiveScreen" />
         <activity android:name="com.example.cyhunt.cyhunt.HomeScreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
