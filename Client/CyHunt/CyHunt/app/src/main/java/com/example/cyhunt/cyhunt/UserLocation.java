@@ -10,7 +10,6 @@ public class UserLocation implements LocationListener {
     public Double latitude;
     public Double longitude;
 
-    @Override
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();

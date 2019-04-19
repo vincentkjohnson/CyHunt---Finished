@@ -725,6 +725,7 @@ id line1
 id line3
 id listMode
 id list_item
+id listview
 id locations
 id loginButton
 id message
@@ -835,6 +836,7 @@ layout abc_tooltip
 layout activity_home_screen
 layout activity_listview
 layout activity_main
+layout activity_objective_screen
 layout notification_action
 layout notification_action_tombstone
 layout notification_template_custom_big

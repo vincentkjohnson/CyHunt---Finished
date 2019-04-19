@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity implements Runnable {
     private Button leaderBoard;
     private TextView scoreText;
 
-    private List<Objective> objectives = new Objective().getObjectives();
-
     ArrayAdapter adapter;
     /**
      * Only a method to test if the locations are fully imported into the locationList array.
