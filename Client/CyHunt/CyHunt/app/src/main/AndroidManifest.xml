@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ObjectiveScreen"></activity>
+        <activity android:name=".LeaderboardActivity"></activity>
+        <activity android:name=".ObjectiveScreen" />
         <activity android:name=".HomeScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
