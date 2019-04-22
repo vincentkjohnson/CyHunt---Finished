@@ -77,7 +77,7 @@ public class UserControllerTests {
         when(this.userLogic.loginUser(request.getUsername(), request.getPassword())).thenReturn(expected);
 
         // Act
-        LoginUserResult result = this.controller.loginUser(request);
+        LoginUserResult result = this.controller.loginUser(request.getUsername(), request.getPassword());
 
         // Assert
         Assert.assertNotNull(result);
@@ -95,7 +95,7 @@ public class UserControllerTests {
         when(this.userLogic.loginUser(request.getUsername(), request.getPassword())).thenReturn(expected);
 
         // Act
-        LoginUserResult result = this.controller.loginUser(request);
+        LoginUserResult result = this.controller.loginUser(request.getUsername(), request.getPassword());
 
         // Assert
         Assert.assertNotNull(result);

@@ -1,7 +1,7 @@
-package cyhunter.server.service;
+package cyhunter.database.service;
 
-import cyhunter.server.dao.UserRepository;
-import cyhunter.server.entity.User;
+import cyhunter.database.dao.UserRepository;
+import cyhunter.database.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

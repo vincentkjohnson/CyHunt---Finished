@@ -14,7 +14,9 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.mockito.Mockito.when;
@@ -31,11 +33,11 @@ public class GameControllerTests {
     @Test
     public void getDailyLeaderBoard_NoInput_ReturnsStub() {
         // Arrange
-        Set<LeaderBoardEntry> expected = this.getMockedData();
+        List<LeaderBoardEntry> expected = this.getMockedData();
         when(scoreLogic.getDailyLeaderBoard()).thenReturn(expected);
 
         // Act
-        Set<LeaderBoardEntry> result = controller.getDailyLeaderBoard();
+        List<LeaderBoardEntry> result = controller.getDailyLeaderBoard();
 
         // Assert
         Assert.assertNotNull(result);
@@ -45,11 +47,11 @@ public class GameControllerTests {
     @Test
     public void getWeeklyLeaderBoard_NoInput_ReturnsStub(){
         // Arrange
-        Set<LeaderBoardEntry> expected = this.getMockedData();
+        List<LeaderBoardEntry> expected = this.getMockedData();
         when(scoreLogic.getWeeklyLeaderBoard()).thenReturn(expected);
 
         // Act
-        Set<LeaderBoardEntry> result = controller.getWeeklyLeaderBoard();
+        List<LeaderBoardEntry> result = controller.getWeeklyLeaderBoard();
 
         // Assert
         Assert.assertNotNull(result);
@@ -93,11 +95,11 @@ public class GameControllerTests {
     @Test
     public void getObjective_NoInput_ResultSet(){
         // Arrange
-        Set<Objective> expected = this.getMockedObjectives();
+        List<Objective> expected = this.getMockedObjectives();
         when(this.scoreLogic.getGameObjectives()).thenReturn(expected);
 
         // Act
-        Set<Objective> result = this.controller.getGameObjectives();
+        List<Objective> result = this.controller.getGameObjectives();
 
         // Assert
         Assert.assertNotNull(result);
@@ -114,8 +116,8 @@ public class GameControllerTests {
      * A Mock result for testing
      * @return A fixed Set of 10 LeaderBoardEntries
      */
-    private Set<LeaderBoardEntry> getMockedData(){
-        Set<LeaderBoardEntry> result = new HashSet<>();
+    private List<LeaderBoardEntry> getMockedData(){
+        List<LeaderBoardEntry> result = new ArrayList<>();
 
         result.add(new LeaderBoardEntry(1, "bobby", 25));
         result.add(new LeaderBoardEntry(2, "jane", 30));
@@ -135,8 +137,8 @@ public class GameControllerTests {
      * A mock result for testing
      * @return A fixed Set of 20 Objectives
      */
-    private Set<Objective> getMockedObjectives(){
-        Set<Objective> result = new HashSet<>();
+    private List<Objective> getMockedObjectives(){
+        List<Objective> result = new ArrayList<>();
 
         result.add(new Objective(1, 42.03469, -93.64558, 5.0, "Administrative Services Building", "ASB", "Built in 1998", 10));
         result.add(new Objective(4, 42.02992, -93.64016, 5.0, "Agronomy Greenhouse","AGRO+GH", "Built in 1985", 15));

@@ -4,12 +4,13 @@ import cyhunter.server.models.LeaderBoardEntry;
 import cyhunter.server.models.Objective;
 import cyhunter.server.models.UpdateUserScoreResult;
 
+import java.util.List;
 import java.util.Set;
 
 public interface IGameLogic {
-    Set<LeaderBoardEntry> getWeeklyLeaderBoard();
+    List<LeaderBoardEntry> getWeeklyLeaderBoard();
 
-    Set<LeaderBoardEntry> getDailyLeaderBoard();
+    List<LeaderBoardEntry> getDailyLeaderBoard();
 
     int getDailyUserScore(int userId);
 
@@ -17,5 +18,5 @@ public interface IGameLogic {
 
     UpdateUserScoreResult updateUserScore(int userId, int locationId);
 
-    Set<Objective> getGameObjectives();
+    List<Objective> getGameObjectives();
 }

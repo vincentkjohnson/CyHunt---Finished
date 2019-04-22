@@ -1,6 +1,6 @@
-package cyhunter.server.dao;
+package cyhunter.database.dao;
 
-import cyhunter.server.entity.User;
+import cyhunter.database.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User,Integer> {

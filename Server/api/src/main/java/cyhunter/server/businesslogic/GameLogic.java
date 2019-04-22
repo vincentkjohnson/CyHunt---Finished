@@ -1,25 +1,43 @@
 package cyhunter.server.businesslogic;
 
+import cyhunter.database.entity.Building;
+import cyhunter.database.entity.GameLocation;
+import cyhunter.database.service.BuildingService;
+import cyhunter.database.service.GameLocationsService;
+import cyhunter.database.service.UserGamesService;
 import cyhunter.server.models.LeaderBoardEntry;
 import cyhunter.server.models.Objective;
 import cyhunter.server.models.UpdateUserScoreResult;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 /***
  * A class to handle logic related to Scores
  */
+@Service
+@Configurable
 public class GameLogic implements IGameLogic {
+
+    private static int DEFAULT_RADIUS = 15;
+
+    @Autowired
+    GameLocationsService glService;
+
+    @Autowired
+    BuildingService bService;
+
+    @Autowired
+    UserGamesService ugService;
 
     /***
      * Gets the weekly Leader Board
      * @return A Set of LeaderBoardEntries
      */
     @Override
-    public Set<LeaderBoardEntry> getWeeklyLeaderBoard(){
+    public List<LeaderBoardEntry> getWeeklyLeaderBoard(){
         return this.getMockedLeaderBoardData();
     }
 
@@ -28,7 +46,7 @@ public class GameLogic implements IGameLogic {
      * @return A Set of LeaderBoardEntries
      */
     @Override
-    public Set<LeaderBoardEntry> getDailyLeaderBoard(){
+    public List<LeaderBoardEntry> getDailyLeaderBoard(){
         return this.getMockedLeaderBoardData();
     }
 
@@ -61,8 +79,9 @@ public class GameLogic implements IGameLogic {
     }
 
     @Override
-    public Set<Objective> getGameObjectives(){
-        return this.getMockedObjectives();
+    public List<Objective> getGameObjectives(){
+        List<Objective> objectives = getCurrentObjectives(true);
+        return objectives;
     }
 
     /***
@@ -80,12 +99,53 @@ public class GameLogic implements IGameLogic {
         return new UpdateUserScoreResult(true, "Score Updated Succesfully", 10, 20, 75);
     }
 
+    private List<Objective> getCurrentObjectives(boolean createIfNoGame){
+        List<Objective> result = new ArrayList<>();
+        long dt = this.getTodaysDate();
+
+        List<GameLocation> gameLocations =  this.glService.findByDate(dt);
+
+        if((gameLocations == null || gameLocations.size() == 0) && createIfNoGame){
+            // Get the Buildings
+            List<Integer> ids = this.bService.findAllIds();
+            List<Building> buildings = new ArrayList<>();
+            Random rnd = new Random();
+
+            for(int i = 0; i < 10; i++){
+                Integer nextIndex = rnd.nextInt(ids.size());
+                Integer nextId = ids.get(nextIndex);
+
+                buildings.add(this.bService.findById(nextId));
+            }
+
+            // Add to GameLocations table
+            for(Building building : buildings){
+                GameLocation gl = new GameLocation();
+                gl.setDate(dt);
+                gl.setBuilding(building);
+
+                gameLocations.add(glService.save(gl));
+            }
+        }
+
+        // Get Objectives from GameLocations
+        for(GameLocation gl : gameLocations){
+            Building b = gl.getBuilding();
+            String infoNote = "Built in " + b.getYearBuilt();
+            Objective obj = new Objective(b.getId(), b.getLattitude(), b.getLongitude(), DEFAULT_RADIUS, b.getBuildingName(), b.getAbbreviation(), infoNote, getCurrentPointValue(new Date()));
+
+            result.add(obj);
+        }
+
+        return result;
+    }
+
     /***
      * A Mock result for testing
      * @return A fixed Set of 10 LeaderBoardEntries
      */
-    private Set<LeaderBoardEntry> getMockedLeaderBoardData(){
-    Set<LeaderBoardEntry> result = new HashSet<>();
+    private List<LeaderBoardEntry> getMockedLeaderBoardData(){
+    List<LeaderBoardEntry> result = new ArrayList<>();
 
     result.add(new LeaderBoardEntry(1, "bobby", 25));
     result.add(new LeaderBoardEntry(2, "jane", 30));
@@ -105,8 +165,8 @@ public class GameLogic implements IGameLogic {
      * A mock result for testing
      * @return A fixed Set of 20 Objectives
      */
-    private Set<Objective> getMockedObjectives(){
-        Set<Objective> result = new HashSet<>();
+    private List<Objective> getMockedObjectives(){
+        List<Objective> result = new ArrayList<>();
 
         result.add(new Objective(1, 42.03469, -93.64558, 5.0, "Administrative Services Building", "ASB", "Built in 1998", 10));
         result.add(new Objective(4, 42.02992, -93.64016, 5.0, "Agronomy Greenhouse","AGRO+GH", "Built in 1985", 15));
@@ -129,5 +189,22 @@ public class GameLogic implements IGameLogic {
         result.add(new Objective(25, 42.02853, -93.65104, 5.0, "Coover Hall","COOVER", "Built in 1950", 100));
 
         return result;
+    }
+
+    private int getCurrentPointValue(Date dt){
+        Calendar calendar = GregorianCalendar.getInstance();
+        calendar.setTime(dt);
+
+        return 24- calendar.get(Calendar.HOUR_OF_DAY);
+    }
+
+    private long getTodaysDate(){
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return calendar.getTime().getTime();
     }
 }
