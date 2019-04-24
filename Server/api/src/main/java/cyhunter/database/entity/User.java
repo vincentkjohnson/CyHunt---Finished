@@ -1,6 +1,7 @@
 package cyhunter.database.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,10 +19,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<UserGame> userGames;
-
-    @Column(name = "totalpoints")
-    private int points;
+    private List<UserGame> userGames;
 
     public User(){
     }
@@ -47,9 +45,9 @@ public class User {
         this.password = password;
     }
 
-    // public List<UserGame> getUserGame(){return userGames;}
+    public List<UserGame> getUserGame(){return userGames;}
 
-    // public void setUserGame(List<UserGame> userGame){this.userGames = userGame;}
+    public void setUserGame(List<UserGame> userGame){this.userGames = userGame;}
 
     public String getUserName() {
         return username;
@@ -57,16 +55,6 @@ public class User {
 
     public void setUser_name(String user_name) {
         this.username = user_name;
-    }
-
-    public int getPoints(){return this.points;}
-
-    public void setPoints(int points){this.points=points;}
-
-    public void addPoints(int points){this.points =this.points+points;}
-
-    public void reducePoint(int point) {
-        this.points -= point;
     }
 
     @Override

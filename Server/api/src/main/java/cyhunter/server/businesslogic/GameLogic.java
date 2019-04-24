@@ -2,12 +2,16 @@ package cyhunter.server.businesslogic;
 
 import cyhunter.database.entity.Building;
 import cyhunter.database.entity.GameLocation;
+import cyhunter.database.entity.UserGame;
 import cyhunter.database.service.BuildingService;
 import cyhunter.database.service.GameLocationsService;
 import cyhunter.database.service.UserGamesService;
+import cyhunter.database.service.UserService;
+import cyhunter.server.controller.UserController;
 import cyhunter.server.models.LeaderBoardEntry;
 import cyhunter.server.models.Objective;
 import cyhunter.server.models.UpdateUserScoreResult;
+import cyhunter.server.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
@@ -31,6 +35,9 @@ public class GameLogic implements IGameLogic {
 
     @Autowired
     UserGamesService ugService;
+
+    @Autowired
+    UserService uService;
 
     /***
      * Gets the weekly Leader Board
@@ -92,11 +99,42 @@ public class GameLogic implements IGameLogic {
      */
     @Override
     public UpdateUserScoreResult updateUserScore(int userId, int locationId){
-        if(userId == 2){
-            return new UpdateUserScoreResult(false, "User Already Achieved Objective", 0, 10, 65);
+        cyhunter.database.entity.User user = this.uService.findByUserId(userId);
+
+        if(user != null){
+            List<Objective> objectives = this.getGameObjectives();
+            Objective obj = null;
+
+            for(Objective o : objectives){
+                if(o.getLocationId() == locationId){
+                    obj = o;
+                    break;
+                }
+            }
+
+            if(obj != null){
+                UserGame ug = this.ugService.findByUserIdAndGameDate(userId, getTodaysDate());
+                if(ug == null){
+                    GameLocation gl = new GameLocation();
+                    gl.setBuilding(this.bService.findById(obj.getLocationId()));
+                    gl.setDate(getTodaysDate());
+
+                    ug = new UserGame();
+                    ug.setDate(getTodaysDate());
+                    ug.setPoint(obj.getCurrentPoints());
+                    ug.setGameLocations(gl);
+
+                    this.ugService.save(ug);
+                } else {
+                    // User already has an entry for this objective
+                    return new UpdateUserScoreResult(false, "User Already Achieved Objective", 0, 10, 65);
+                }
+            } else {
+                return new UpdateUserScoreResult(false, "Location is not one of today's objectives", 0, 0, 0);
+            }
         }
 
-        return new UpdateUserScoreResult(true, "Score Updated Succesfully", 10, 20, 75);
+        return new UpdateUserScoreResult(false, "User could not be found.", 0, 0, 0);
     }
 
     private List<Objective> getCurrentObjectives(boolean createIfNoGame){

@@ -26,8 +26,7 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public Boolean deleteUserByUserName(String username)
-    {
+    public Boolean deleteUserByUserName(String username) {
         User target = findByUserName(username);
         if(target != null){
             userRepository.delete(target);
@@ -35,4 +34,6 @@ public class UserService {
         }
         return false;
     }
+
+    public User findByUserId(int userId) { return userRepository.findFirstById(userId); }
 }

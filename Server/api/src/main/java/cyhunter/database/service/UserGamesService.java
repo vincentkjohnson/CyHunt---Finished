@@ -17,5 +17,10 @@ public class UserGamesService {
     {
         return userGamesRepository.findByUser(user);
     }
+
     public List<UserGame> getByPoint(){return userGamesRepository.findAllByOrderByPointAsc();};
+
+    public UserGame findByUserIdAndGameDate(int userId, long date){ return userGamesRepository.findForUserAndGame(userId, date); }
+
+    public UserGame save(UserGame ug ) { return userGamesRepository.save(ug); }
 }
