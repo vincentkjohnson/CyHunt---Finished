@@ -1,12 +1,15 @@
 package com.example.cyhunt.cyhunt;
 
-import java.lang.reflect.Array;
+
+import java.util.List;
 
 public class ApiAuthenticationClient implements GetTask.GetResultHandler {
 
+    private static boolean gettingObjectives = false;
+
     interface ApiResultHandler {
         void handleResult(UserResponse response);
-        void handleResultArray(ObjectiveResponse response);
+        void handleObjectiveListResult(List<Objective> objectives);
     }
 
     private final String baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
@@ -22,28 +25,30 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
     }
 
     public void LoginUser(String username, String password) {
+        gettingObjectives = false;
         GetTask task = new GetTask(ApiAuthenticationClient.this);
-        task.execute(login + "/" + username + "/" + password, "", "GET");
+        task.execute(login + "/" + username + "/" + password, "", "GET", "0");
     }
 
     public void AddUser(String username, String password) {
+        gettingObjectives = false;
         UserRequest req = new UserRequest(username, password);
         GetTask task = new GetTask(ApiAuthenticationClient.this);
-        task.execute(add, req.toJson(), "POST");
+        task.execute(add, req.toJson(), "POST", "0");
     }
 
     public void getObjectives() {
+        gettingObjectives = true;
         GetTask task = new GetTask(ApiAuthenticationClient.this);
-        task.execute(objectives, "GET");
+        task.execute(objectives, "", "GET", "1");
     }
 
     @Override
-    public void getResult(String result) {
-        this.resultHandler.handleResult(UserResponse.fromJson(result));
-    }
-
-    @Override
-    public void getResultArray(String result) {
-        this.resultHandler.handleResultArray(ObjectiveResponse.fromJson(result));
+    public void getResult(String result, int resultType) {
+        if (resultType == 0) {
+            this.resultHandler.handleResult(UserResponse.fromJson(result));
+        } else if (resultType == 1) {
+            this.resultHandler.handleObjectiveListResult(Objective.getFromJson(result));
+        }
     }
 }

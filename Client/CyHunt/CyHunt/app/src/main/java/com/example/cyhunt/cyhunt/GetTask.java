@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class GetTask extends AsyncTask<String, Integer, String> {
+public class GetTask extends AsyncTask<String, Integer, ResponseWrapper> {
 
     private GetResultHandler mGetResultHandler;
     private final String TAG = this.getClass().getSimpleName();
@@ -23,36 +23,41 @@ public class GetTask extends AsyncTask<String, Integer, String> {
 
 
     @Override
-    protected String doInBackground(String... strings) {
+    protected ResponseWrapper doInBackground(String... params) {
         try {
-            if (strings.length == 3) {
-                URL url = new URL(strings[0]);
-                String body = strings[1];
-                String method = strings[2];
+            if (params.length == 4) {
 
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod(method);
-                connection.setRequestProperty("Accept", "application/json");
-                connection.setUseCaches(false);
+                URL url = new URL(params[0]);
+                String body = params[1];
+                String method = params[2];
+                String returnType = params[3];
+                int rType = Integer.parseInt(returnType);
 
-                if (body.length() > 0 && !method.equals("GET")) {
-                    connection.setRequestProperty("Content-length", body.getBytes().length + "");
-                    connection.setRequestProperty("Content-Type", "application/json");
-                    connection.setDoInput(true);
-                    connection.setDoOutput(true);
+                // Setup connection
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod(method);
+                conn.setRequestProperty("Accept", "application/json");
+                conn.setUseCaches(false);
 
-                    OutputStream output = connection.getOutputStream();
-                    output.write(body.getBytes("UTF-8"));
-                    output.close();
-                    connection.connect();
+                if(body.length() > 0 && !method.equals("GET")) {
+                    conn.setRequestProperty("Content-length", body.getBytes().length + "");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+
+                    // Set content body
+                    OutputStream os = conn.getOutputStream();
+                    os.write(body.getBytes("UTF-8"));
+                    os.close();
+                    conn.connect();
                 }
 
-                int responseCode = connection.getResponseCode();
+                int responseCode = conn.getResponseCode();
 
-                if(responseCode == 200) {
-                    this.mGetResultHandler.getResult(readStream(connection.getInputStream()));
+                if(responseCode == 200){
+                    this.mGetResultHandler.getResult(readStream(conn.getInputStream()), rType);
                 } else {
-                    this.mGetResultHandler.getResult("Response Code: " + Integer.toString(responseCode));
+                    this.mGetResultHandler.getResult("Response Code: " + Integer.toString(responseCode), rType);
                 }
             }
         } catch (MalformedURLException e) {
@@ -61,33 +66,33 @@ public class GetTask extends AsyncTask<String, Integer, String> {
             Log.e(TAG, "IO Exception: " + e.getMessage());
         }
 
-        return "";
+        return new ResponseWrapper("Error", -1);
     }
+
 
     @Override
-    protected void onPostExecute(String result) {
-        mGetResultHandler.getResult(result);
+    protected void onPostExecute(ResponseWrapper resp) {
+        // mGetResultHandler.getResult(resp.response, resp.responseType);
     }
 
-    private String readStream(InputStream input) {
-        StringBuilder builder = new StringBuilder();
+    private String readStream(InputStream inputStream) {
+        StringBuilder sb = new StringBuilder();
+
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String nextLine = "";
 
-            while ((nextLine = reader.readLine())  != null) {
-                builder.append(nextLine);
+            while ((nextLine = reader.readLine()) != null) {
+                sb.append(nextLine);
             }
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
 
-        return builder.toString();
+        return sb.toString();
     }
 
     public interface GetResultHandler {
-        void getResult(String result);
-        void getResultArray(String result);
+        void getResult(String result, int resultType);
     }
-
 }

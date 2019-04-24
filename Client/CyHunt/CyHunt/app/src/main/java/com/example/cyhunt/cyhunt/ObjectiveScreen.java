@@ -2,6 +2,7 @@ package com.example.cyhunt.cyhunt;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -9,33 +10,35 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
-public class ObjectiveScreen extends AppCompatActivity  {
+public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticationClient.ApiResultHandler {
 
+    private static ObjectiveScreen parent;
+    private final ApiAuthenticationClient connector = new ApiAuthenticationClient((ApiAuthenticationClient.ApiResultHandler)this);
     private ListView listView;
     private List<Objective> objectives = new ArrayList<>();
     private double longitude = -93.64999;
     private double latitude = 42.02595;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective_screen);
+        parent = this;
+        connector.getObjectives();
 
         listView = (ListView) findViewById(R.id.listview);
-
         final List<String> objectivesName = new ArrayList<>();
-
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, objectivesName);
-        setUp();
         for (int i = 0; i < objectives.size(); i++) {
+            Log.e("test", objectives.get(i).getName());
             adapter.add(objectives.get(i).getName());
         }
-
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -58,21 +61,6 @@ public class ObjectiveScreen extends AppCompatActivity  {
         });
     }
 
-
-    public void setUp() {
-        objectives.add(new Objective(42.02965, -93.65095, 5.0, "Armory", ""));
-        objectives.add(new Objective(42.02856, -93.64467, 5.0, "Bessey Hall", ""));
-        objectives.add(new Objective(42.03469, -93.64558, 5.0, "Administrative Building", ""));
-        objectives.add(new Objective(42.02523, -93.64931, 5.0, "Enrollment Services Center", ""));
-        objectives.add(new Objective(42.02531, -93.64839, 5.0, "Carver Hall", ""));
-        objectives.add(new Objective(42.02992, -93.64016, 5.0, "Agronomy Greenhouse", ""));
-        objectives.add(new Objective(42.02363, -93.64155, 5.0, "Birch Residence Hall", ""));
-        objectives.add(new Objective(42.02992, -93.64203, 5.0, "Crop Genome Informatics Laboratory", ""));
-        objectives.add(new Objective(42.02439, -93.64154, 5.0, "Barton Residence Hall", ""));
-        objectives.add(new Objective(42.03109, -93.65119, 5.0, "Communications Building", ""));
-        objectives.add(new Objective(42.02595, -93.64999, 5.0, "Pearson Hall", ""));
-    }
-
     public static double distFrom(double userLat, double userLong, double objLat, double objLong) {
         double earthRadius = 3958.75; // miles (or 6371.0 kilometers)
         double dLat = Math.toRadians(objLat - userLat);
@@ -87,4 +75,21 @@ public class ObjectiveScreen extends AppCompatActivity  {
         return dist;
     }
 
+    @Override
+    public void handleResult(UserResponse response) {
+
+    }
+
+    @Override
+    public void handleObjectiveListResult(final List<Objective> objectivesList) {
+        if (objectivesList != null && !objectivesList.isEmpty()) {
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    objectives = objectivesList;
+                    Toast.makeText(getApplicationContext(), "Objectives Received", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
 }
