@@ -17,7 +17,7 @@ public class UserService {
     }
 
     public User findByUserName(String username){
-        User result = userRepository.findByUsername(username);
+        User result = userRepository.findByUsernameIgnoreCase(username);
         return result;
     }
 

@@ -2,23 +2,23 @@ package cyhunter.server.models;
 
 public class UpdateUserScoreRequest {
 
-    private int userId;
+    private String username;
 
-    private int locationId;
+    private String locationName;
 
-    public int getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public int getLocationId() {
-        return locationId;
+    public String getLocationName() {
+        return locationName;
     }
 
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 }

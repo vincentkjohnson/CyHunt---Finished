@@ -59,13 +59,13 @@ public class GameControllerTests {
     }
 
     @Test
-    public void updateUserScore_UserId2_ResultFalse(){
+    public void updateUserScore_UserNameBob_ResultFalse(){
         // Arrange
         UpdateUserScoreResult expected = new UpdateUserScoreResult(false, "User Already Achieved Objective", 0, 10, 65);
         UpdateUserScoreRequest request = new UpdateUserScoreRequest();
-        request.setUserId(2);
-        request.setLocationId(1);
-        when(this.scoreLogic.updateUserScore(request.getUserId(), request.getLocationId())).thenReturn(expected);
+        request.setUsername("Bob");
+        request.setLocationName("Coover");
+        when(this.scoreLogic.updateUserScore(request.getUsername(), request.getLocationName())).thenReturn(expected);
 
         // Act
         UpdateUserScoreResult result = this.controller.updateUserScore(request);
@@ -76,13 +76,13 @@ public class GameControllerTests {
     }
 
     @Test
-    public void updateUserScore_UserId1_ResultTrue(){
+    public void updateUserScore_UserIdBob_ResultTrue(){
         // Arrange
         UpdateUserScoreResult expected = new UpdateUserScoreResult(true, "Score Updated Succesfully", 0, 10, 65);
         UpdateUserScoreRequest request = new UpdateUserScoreRequest();
-        request.setUserId(1);
-        request.setLocationId(1);
-        when(this.scoreLogic.updateUserScore(request.getUserId(), request.getLocationId())).thenReturn(expected);
+        request.setUsername("Bob");
+        request.setLocationName("Coover");
+        when(this.scoreLogic.updateUserScore(request.getUsername(), request.getLocationName())).thenReturn(expected);
 
         // Act
         UpdateUserScoreResult result = this.controller.updateUserScore(request);

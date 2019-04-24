@@ -60,18 +60,18 @@ public class GameController {
 
     /***
      * Gets the requesting User's daily Score
-     * @param uId The Id of the User to get the daily Score for
+     * @param username The Id of the User to get the daily Score for
      * @return An int
      */
-    @GetMapping(path="/dailyuserscore/{uId}", produces = "application/json")
+    @GetMapping(path="/dailyuserscore/{username}", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code=200, message="Succesfully retrieved score"),
             @ApiResponse(code=404, message = "Could not find User with that Id")
     })
-    public int getDailyUserScore(@PathVariable int uId){
+    public int getDailyUserScore(@PathVariable String username){
 
         try {
-            int result = this.gameLogic.getDailyUserScore(uId);
+            int result = this.gameLogic.getDailyUserScore(username);
             return result;
         } catch (IllegalArgumentException iEx){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user with that Id could be found");
@@ -80,16 +80,16 @@ public class GameController {
 
     /***
      * Gets the requesting User's weekly Score
-     * @param uId The Id of the User requesting the weekly score
+     * @param username The Id of the User requesting the weekly score
      * @return An int
      */
-    @GetMapping(path="/weeklyuserscore/{uId}", produces = "application/json")
+    @GetMapping(path="/weeklyuserscore/{username}", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code=200, message="Succesfully retrieved score"),
             @ApiResponse(code=404, message = "Could not find User with that Id")
     })
-    public int getWeeklyUserScore(@PathVariable int uId){
-        return this.gameLogic.getWeeklyUserScore(uId);
+    public int getWeeklyUserScore(@PathVariable String username){
+        return this.gameLogic.getWeeklyUserScore(username);
     }
 
     /***
@@ -104,7 +104,7 @@ public class GameController {
             @ApiResponse(code=404, message = "Could not find User with that Id")
     })
     public UpdateUserScoreResult updateUserScore(@RequestBody UpdateUserScoreRequest uus){
-        return this.gameLogic.updateUserScore(uus.getUserId(), uus.getLocationId());
+        return this.gameLogic.updateUserScore(uus.getUsername(), uus.getLocationName());
     }
 
     /***

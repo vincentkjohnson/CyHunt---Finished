@@ -10,7 +10,7 @@ public interface BuildingRepository extends JpaRepository<Building,Integer> {
 
     List<Building> findByYearbuilt(int year);
 
-    Building findByBuildingname(String buildingname);
+    Building findByBuildingnameIgnoreCase(String buildingname);
 
     Building findById(int id);
 

@@ -15,7 +15,7 @@ public class BuildingService {
 
     public List<Building> findByYearBuilt(int year){return buildingRepository.findByYearbuilt(year);}
 
-    public Building findByBuildingName(String buildingname){return  buildingRepository.findByBuildingname(buildingname);}
+    public Building findByBuildingName(String buildingname){return  buildingRepository.findByBuildingnameIgnoreCase(buildingname);}
 
     public Building findById(int id){return buildingRepository.findById(id);}
 

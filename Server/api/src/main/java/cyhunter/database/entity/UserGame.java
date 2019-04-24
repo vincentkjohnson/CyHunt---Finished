@@ -66,4 +66,8 @@ public class UserGame {
 	public GameLocation getGameLocations(){return this.gameLocation;}
 
 	public void setGameLocations(GameLocation gameLocations){this.gameLocation = gameLocations;}
+
+	public User getUser() { return this.user; }
+
+	public void setUser(User u) { this.user = u; }
 }

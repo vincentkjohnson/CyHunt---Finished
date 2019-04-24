@@ -7,11 +7,9 @@ import cyhunter.database.service.BuildingService;
 import cyhunter.database.service.GameLocationsService;
 import cyhunter.database.service.UserGamesService;
 import cyhunter.database.service.UserService;
-import cyhunter.server.controller.UserController;
 import cyhunter.server.models.LeaderBoardEntry;
 import cyhunter.server.models.Objective;
 import cyhunter.server.models.UpdateUserScoreResult;
-import cyhunter.server.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
@@ -45,7 +43,8 @@ public class GameLogic implements IGameLogic {
      */
     @Override
     public List<LeaderBoardEntry> getWeeklyLeaderBoard(){
-        return this.getMockedLeaderBoardData();
+        List<UserGame> leaders = this.ugService.getTop10Week(this.getNDaysAgoMillis(7));
+        return this.convertLeaderBoard(leaders);
     }
 
     /***
@@ -54,92 +53,115 @@ public class GameLogic implements IGameLogic {
      */
     @Override
     public List<LeaderBoardEntry> getDailyLeaderBoard(){
-        return this.getMockedLeaderBoardData();
+        List<UserGame> leaders = this.ugService.getTop10Day(this.getNDaysAgoMillis(0));
+        return convertLeaderBoard(leaders);
     }
 
     /***
      * Gets the daily Score for the User specified
-     * @param userId The Id of the User to get the daily Score for
+     * @param username The username of the User to get the daily Score for
      * @return An int
      */
     @Override
-    public int getDailyUserScore(int userId){
-        if(userId == 10){
-            throw new IllegalArgumentException("Could not find User with ID: " + userId );
-        }
-
-        return 10;
+    public int getDailyUserScore(String username){
+        cyhunter.database.entity.User user = this.uService.findByUserName(username);
+        cyhunter.database.entity.UserGame uGame = this.ugService.getUserWeeklyScore(this.getNDaysAgoMillis(7), user.getId());
+        return uGame.getPoint();
     }
 
     /***
      * Gets the weekly Score for the User specified
-     * @param userId The Id of the User to get the Weekly Score for
+     * @param username The username of the User to get the Weekly Score for
      * @return An int
      */
     @Override
-    public int getWeeklyUserScore(int userId){
-        if(userId == 10){
-            throw new IllegalArgumentException("Could not find User with ID: " + userId);
-        }
-
-        return 50;
+    public int getWeeklyUserScore(String username){
+        cyhunter.database.entity.User user = this.uService.findByUserName(username);
+        cyhunter.database.entity.UserGame uGame = this.ugService.getUserDailyScore(this.getNDaysAgoMillis(0), user.getId());
+        return uGame.getPoint();
     }
 
     @Override
     public List<Objective> getGameObjectives(){
-        List<Objective> objectives = getCurrentObjectives(true);
-        return objectives;
+        return getCurrentObjectives(true);
     }
 
     /***
      * Updates the Score for a Use by claiming completion of an objective
-     * @param userId The Id of the User to update the Score for
-     * @param locationId The Id of the Location the User is at
+     * @param username The username of the User to update the Score for
+     * @param locationName The name of the Location the User is at
      * @return A UpdateScoreResult object
      */
     @Override
-    public UpdateUserScoreResult updateUserScore(int userId, int locationId){
-        cyhunter.database.entity.User user = this.uService.findByUserId(userId);
+    public UpdateUserScoreResult updateUserScore(String username, String locationName){
+        cyhunter.database.entity.User user = this.uService.findByUserName(username);
+        cyhunter.database.entity.Building building = this.bService.findByBuildingName(locationName);
 
-        if(user != null){
-            List<Objective> objectives = this.getGameObjectives();
-            Objective obj = null;
+        // Validate User
+        if(user == null){
+            return new UpdateUserScoreResult(false, "User does not exist", 0, 0, 0);
+        }
 
-            for(Objective o : objectives){
-                if(o.getLocationId() == locationId){
-                    obj = o;
-                    break;
-                }
-            }
+        // Validate Location
+        if(building == null){
+            return new UpdateUserScoreResult(false,
+                "Location does not exist",
+                0,
+                getDailyUserScore(user.getUserName()),
+                getWeeklyUserScore(user.getUserName()));
+        }
 
-            if(obj != null){
-                UserGame ug = this.ugService.findByUserIdAndGameDate(userId, getTodaysDate());
-                if(ug == null){
-                    GameLocation gl = new GameLocation();
-                    gl.setBuilding(this.bService.findById(obj.getLocationId()));
-                    gl.setDate(getTodaysDate());
+        List<Objective> objectives = this.getGameObjectives();
+        Objective obj = null;
 
-                    ug = new UserGame();
-                    ug.setDate(getTodaysDate());
-                    ug.setPoint(obj.getCurrentPoints());
-                    ug.setGameLocations(gl);
-
-                    this.ugService.save(ug);
-                } else {
-                    // User already has an entry for this objective
-                    return new UpdateUserScoreResult(false, "User Already Achieved Objective", 0, 10, 65);
-                }
-            } else {
-                return new UpdateUserScoreResult(false, "Location is not one of today's objectives", 0, 0, 0);
+        for(Objective o : objectives){
+            if(o.getLocationId() == building.getId()){
+                obj = o;
+                break;
             }
         }
 
-        return new UpdateUserScoreResult(false, "User could not be found.", 0, 0, 0);
+        // Validate that Location is a valid Objective
+        if(obj == null){
+            return new UpdateUserScoreResult(false,
+                "Location is not one of today's objectives",
+                0,
+                this.getDailyUserScore(user.getUserName()),
+                this.getWeeklyUserScore(user.getUserName()));
+        }
+
+        // Ensure User hasn't achieved Objective yet.
+        UserGame ug = this.ugService.findByUserIdAndGameDate(user.getId(), getNDaysAgoMillis(0));
+        if(ug != null){
+            return new UpdateUserScoreResult(false,
+                "User Already Achieved Objective",
+                0,
+                this.getDailyUserScore(user.getUserName()),
+                this.getWeeklyUserScore(user.getUserName()));
+        }
+
+        GameLocation gl = new GameLocation();
+        gl.setBuilding(this.bService.findById(obj.getLocationId()));
+        gl.setDate(getNDaysAgoMillis(0));
+        int points = obj.getCurrentPoints();
+
+        ug = new UserGame();
+        ug.setDate(getNDaysAgoMillis(0));
+        ug.setPoint(points);
+        ug.setGameLocations(gl);
+        this.ugService.save(ug);
+
+        return new UpdateUserScoreResult(true,
+            "User Score updated succesfully",
+            points,
+            this.getDailyUserScore(user.getUserName()),
+            this.getWeeklyUserScore(user.getUserName())
+        );
     }
 
     private List<Objective> getCurrentObjectives(boolean createIfNoGame){
         List<Objective> result = new ArrayList<>();
-        long dt = this.getTodaysDate();
+        long dt = this.getNDaysAgoMillis(0);
 
         List<GameLocation> gameLocations =  this.glService.findByDate(dt);
 
@@ -147,6 +169,7 @@ public class GameLogic implements IGameLogic {
             // Get the Buildings
             List<Integer> ids = this.bService.findAllIds();
             List<Building> buildings = new ArrayList<>();
+            gameLocations = new ArrayList<>();
             Random rnd = new Random();
 
             for(int i = 0; i < 10; i++){
@@ -167,64 +190,15 @@ public class GameLogic implements IGameLogic {
         }
 
         // Get Objectives from GameLocations
-        for(GameLocation gl : gameLocations){
-            Building b = gl.getBuilding();
-            String infoNote = "Built in " + b.getYearBuilt();
-            Objective obj = new Objective(b.getId(), b.getLattitude(), b.getLongitude(), DEFAULT_RADIUS, b.getBuildingName(), b.getAbbreviation(), infoNote, getCurrentPointValue(new Date()));
+        if(gameLocations != null){
+            for (GameLocation gl : gameLocations) {
+                Building b = gl.getBuilding();
+                String infoNote = "Built in " + b.getYearBuilt();
+                Objective obj = new Objective(b.getId(), b.getLattitude(), b.getLongitude(), DEFAULT_RADIUS, b.getBuildingName(), b.getAbbreviation(), infoNote, getCurrentPointValue(new Date()));
 
-            result.add(obj);
+                result.add(obj);
+            }
         }
-
-        return result;
-    }
-
-    /***
-     * A Mock result for testing
-     * @return A fixed Set of 10 LeaderBoardEntries
-     */
-    private List<LeaderBoardEntry> getMockedLeaderBoardData(){
-    List<LeaderBoardEntry> result = new ArrayList<>();
-
-    result.add(new LeaderBoardEntry(1, "bobby", 25));
-    result.add(new LeaderBoardEntry(2, "jane", 30));
-    result.add(new LeaderBoardEntry(3, "john", 35));
-    result.add(new LeaderBoardEntry(4, "janet", 40));
-    result.add(new LeaderBoardEntry(5, "user2", 45));
-    result.add(new LeaderBoardEntry(6, "tom", 50));
-    result.add(new LeaderBoardEntry(7, "sarah", 55));
-    result.add(new LeaderBoardEntry(8, "jessie", 60));
-    result.add(new LeaderBoardEntry(9, "josh", 65));
-    result.add(new LeaderBoardEntry(10, "tom2", 70));
-
-    return result;
-}
-
-    /***
-     * A mock result for testing
-     * @return A fixed Set of 20 Objectives
-     */
-    private List<Objective> getMockedObjectives(){
-        List<Objective> result = new ArrayList<>();
-
-        result.add(new Objective(1, 42.03469, -93.64558, 5.0, "Administrative Services Building", "ASB", "Built in 1998", 10));
-        result.add(new Objective(4, 42.02992, -93.64016, 5.0, "Agronomy Greenhouse","AGRO+GH", "Built in 1985", 15));
-        result.add(new Objective(5, 42.02838, -93.64248, 5.0, "Agronomy Hall","AGRON", "Built in 1952", 20));
-        result.add(new Objective(6, 42.02992, -93.64203, 5.0, "Crop Genome Informatics Laboratory","CGIL", "Built in 1961", 25));
-        result.add(new Objective(7, 42.02523, -93.64931, 5.0, "Enrollment Services Center","ENRL_SC", "Built in 1907", 30));
-        result.add(new Objective(10, 42.02965, -93.65095, 5.0, "Armory","ARMORY", "Built in 1924", 35));
-        result.add(new Objective(11, 42.02824, -93.64991, 5.0, "Atanasoff Hall","ATANSFF", "Built in 1969", 40));
-        result.add(new Objective(12, 42.02439, -93.64154, 5.0, "Barton Residence Hall","BARTON", "Built in 1918", 45));
-        result.add(new Objective(13, 42.02623, -93.64859, 5.0, "Beardshear Hall","BDSHR", "Built in 1906", 50));
-        result.add(new Objective(14, 42.02856, -93.64467, 5.0, "Bessey Hall","BESSEY", "Built in 1967", 55));
-        result.add(new Objective(15, 42.02591, -93.65296, 5.0, "Beyer Hall","BEYER", "Built in 1964", 60));
-        result.add(new Objective(16, 42.02363, -93.64155, 5.0, "Birch Residence Hall","BIRCH", "Built in 1923", 65));
-        result.add(new Objective(17, 42.02612, -93.6515, 5.0, "Black Engineering","BLACK", "Built in 1985", 70));
-        result.add(new Objective(18, 42.02236, -93.64388, 5.0, "Buchanan Residence Hall","BUCHAN", "Built in 1964", 75));
-        result.add(new Objective(19, 42.02544, -93.64602, 5.0, "Campanile","CAMPANI", "Built in 1898", 80));
-        result.add(new Objective(20, 42.02531, -93.64839, 5.0, "Carver Hall","CARVER", "Built in 1969", 85));
-        result.add(new Objective(21, 42.028, -93.64565, 5.0, "Catt Hall","CATT", "Built in 1893", 90));
-        result.add(new Objective(24, 42.03109, -93.65119, 5.0, "Communications Building","COM+BDG", "Built in 1964", 95));
-        result.add(new Objective(25, 42.02853, -93.65104, 5.0, "Coover Hall","COOVER", "Built in 1950", 100));
 
         return result;
     }
@@ -236,13 +210,27 @@ public class GameLogic implements IGameLogic {
         return 24- calendar.get(Calendar.HOUR_OF_DAY);
     }
 
-    private long getTodaysDate(){
+    private long getNDaysAgoMillis(int n) {
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DAY_OF_MONTH, -1 * n);
 
         return calendar.getTime().getTime();
+    }
+
+    private List<LeaderBoardEntry> convertLeaderBoard(List<UserGame> board){
+        List<LeaderBoardEntry> result = new ArrayList<>();
+        int position = 1;
+
+        for(UserGame leader : board){
+            cyhunter.database.entity.User u = leader.getUser();
+            LeaderBoardEntry lb = new LeaderBoardEntry(position, u.getUserName(), leader.getPoint());
+            result.add(lb);
+        }
+
+        return result;
     }
 }

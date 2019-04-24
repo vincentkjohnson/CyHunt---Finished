@@ -12,11 +12,11 @@ public interface IGameLogic {
 
     List<LeaderBoardEntry> getDailyLeaderBoard();
 
-    int getDailyUserScore(int userId);
+    int getDailyUserScore(String username);
 
-    int getWeeklyUserScore(int userId);
+    int getWeeklyUserScore(String username);
 
-    UpdateUserScoreResult updateUserScore(int userId, int locationId);
+    UpdateUserScoreResult updateUserScore(String username, String locationName);
 
     List<Objective> getGameObjectives();
 }
