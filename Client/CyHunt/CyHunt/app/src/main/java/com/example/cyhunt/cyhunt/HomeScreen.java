@@ -12,16 +12,13 @@ import com.example.cyhunt.cyhunt.ApiAuthenticationClient.ApiResultHandler;
 
 import java.util.List;
 
-
 public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
     private Button button_login_login;
     private EditText editText_login_username;
     private EditText editText_login_password;
-
     private final ApiAuthenticationClient connector = new ApiAuthenticationClient((ApiResultHandler)this);
     private static HomeScreen parent;
-
 
 
 
@@ -51,6 +48,7 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
     public void openMainActivity() {
         Intent intent = new Intent(  this, ObjectiveScreen.class);
+        intent.putExtra("username", editText_login_username.toString());
         startActivity(intent);
     }
 

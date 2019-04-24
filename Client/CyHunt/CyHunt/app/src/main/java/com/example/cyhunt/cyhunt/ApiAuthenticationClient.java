@@ -16,6 +16,7 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
     private final String add = baseURL + "user/add";
     private final String login = baseURL + "user/login";
     private final String objectives = baseURL + "game/objectives";
+    private final String updateScore = baseURL + "/game/updateuserscore";
 
     private ApiResultHandler resultHandler;
 
@@ -41,6 +42,14 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
         gettingObjectives = true;
         GetTask task = new GetTask(ApiAuthenticationClient.this);
         task.execute(objectives, "", "GET", "1");
+    }
+
+    public void updateScore(String username, String location) {
+        gettingObjectives = false;
+        UserRequest req = new UserRequest(username, location);
+        GetTask task = new GetTask(ApiAuthenticationClient.this);
+        task.execute(updateScore, req.toJson(), "POST", "0");
+
     }
 
     @Override
