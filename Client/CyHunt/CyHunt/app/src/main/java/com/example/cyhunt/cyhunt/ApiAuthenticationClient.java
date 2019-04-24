@@ -6,6 +6,7 @@ import java.util.List;
 public class ApiAuthenticationClient implements GetTask.GetResultHandler {
 
     private static boolean gettingObjectives = false;
+    private static boolean gettingLeaderboard = false;
 
     interface ApiResultHandler {
         void handleResult(UserResponse response);
@@ -27,12 +28,14 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
 
     public void LoginUser(String username, String password) {
         gettingObjectives = false;
+        gettingLeaderboard = false;
         GetTask task = new GetTask(ApiAuthenticationClient.this);
         task.execute(login + "/" + username + "/" + password, "", "GET", "0");
     }
 
     public void AddUser(String username, String password) {
         gettingObjectives = false;
+        gettingLeaderboard = false;
         UserRequest req = new UserRequest(username, password);
         GetTask task = new GetTask(ApiAuthenticationClient.this);
         task.execute(add, req.toJson(), "POST", "0");
@@ -40,16 +43,25 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
 
     public void getObjectives() {
         gettingObjectives = true;
+        gettingLeaderboard = false;
         GetTask task = new GetTask(ApiAuthenticationClient.this);
         task.execute(objectives, "", "GET", "1");
     }
 
     public void updateScore(String username, String location) {
         gettingObjectives = false;
+        gettingLeaderboard = false;
         UserRequest req = new UserRequest(username, location);
         GetTask task = new GetTask(ApiAuthenticationClient.this);
         task.execute(updateScore, req.toJson(), "POST", "0");
 
+    }
+
+    public void getLeaderBoard() {
+        gettingObjectives = false;
+        gettingLeaderboard = true;
+        GetTask task = new GetTask(ApiAuthenticationClient.this);
+        //TODO task.execute()
     }
 
     @Override
