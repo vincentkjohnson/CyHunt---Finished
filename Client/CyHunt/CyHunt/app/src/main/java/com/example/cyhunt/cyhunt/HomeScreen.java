@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.cyhunt.cyhunt.ApiAuthenticationClient.ApiResultHandler;
 
+import java.util.List;
+
 
 public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
@@ -77,16 +79,6 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
     }
 
     @Override
-    public void handleResultArray(final ObjectiveResponse response) {
-        if (response != null) {
-            parent.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (response.isSuccess()) {
-                        System.out.print(response.getMessage());
-                    }
-                }
-            });
-        }
+    public void handleObjectiveListResult(final List<Objective> objectives) {
     }
 }
