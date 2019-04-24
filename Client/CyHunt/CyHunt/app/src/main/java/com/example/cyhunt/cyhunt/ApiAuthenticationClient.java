@@ -1,6 +1,7 @@
 package com.example.cyhunt.cyhunt;
 
 
+
 import java.util.List;
 
 public class ApiAuthenticationClient implements GetTask.GetResultHandler {
@@ -11,6 +12,7 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
     interface ApiResultHandler {
         void handleResult(UserResponse response);
         void handleObjectiveListResult(List<Objective> objectives);
+        void handleLeaderBoardListResult(List<LeaderboardEntry> leaderboards);
     }
 
     private final String baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
@@ -18,6 +20,8 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
     private final String login = baseURL + "user/login";
     private final String objectives = baseURL + "game/objectives";
     private final String updateScore = baseURL + "/game/updateuserscore";
+    private final String dailyleaders = baseURL + "/game/dailyleaders";
+    private final String weeklyleaders = baseURL + "/game/weeklyleaders";
 
     private ApiResultHandler resultHandler;
 
@@ -57,11 +61,15 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
 
     }
 
-    public void getLeaderBoard() {
+    public void getLeaderBoard(String choice) {
         gettingObjectives = false;
         gettingLeaderboard = true;
         GetTask task = new GetTask(ApiAuthenticationClient.this);
-        //TODO task.execute()
+        if (choice == "daily") {
+            task.execute(dailyleaders, "", "GET", "2");
+        } else if (choice == "weekly") {
+            task.execute(weeklyleaders, "", "GET", "2");
+        }
     }
 
     @Override
@@ -70,6 +78,8 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
             this.resultHandler.handleResult(UserResponse.fromJson(result));
         } else if (resultType == 1) {
             this.resultHandler.handleObjectiveListResult(Objective.getFromJson(result));
+        } else if (resultType == 2) {
+            this.resultHandler.handleLeaderBoardListResult(LeaderboardEntry.getFromJson(result));
         }
     }
 }

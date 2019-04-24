@@ -79,4 +79,9 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
     @Override
     public void handleObjectiveListResult(final List<Objective> objectives) {
     }
+
+    @Override
+    public void handleLeaderBoardListResult(List<LeaderboardEntry> leaderboards) {
+
+    }
 }

@@ -123,6 +123,11 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     }
 
     @Override
+    public void handleLeaderBoardListResult(List<LeaderboardEntry> leaderboards) {
+
+    }
+
+    @Override
     public void onConnected(Bundle connectionHint) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
