@@ -41,12 +41,14 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     private static ObjectiveScreen parent;
     private final ApiAuthenticationClient connector = new ApiAuthenticationClient((ApiAuthenticationClient.ApiResultHandler) this);
     private ListView listView;
+    private ArrayAdapter<String> adapter;
     private List<Objective> objectives = new ArrayList<>();
     private double longitude = -93.64999;
     private double latitude = 42.02595;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private String user;
+    private int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,21 +59,19 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
         final String username = user;
         parent = this;
 
+
+        this.setTitle("Score: " + score);
+
+
         mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
 
-        connector.getObjectives();
-
         listView = (ListView) findViewById(R.id.listview);
         final List<String> objectivesName = new ArrayList<>();
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, objectivesName);
-        for (int i = 0; i < objectives.size(); i++) {
-            Log.e("test", objectives.get(i).getName());
-            adapter.add(objectives.get(i).getName());
-        }
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, objectivesName);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,11 +88,19 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
                     Toast.makeText(getApplicationContext(), "You found " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                     adapter.remove(selectedObjective);
                     connector.updateScore(username, selectedObjective);
+                    score += selObj.getCurrentPoints();
+
                 } else {
                     Toast.makeText(getApplicationContext(), "You're not close enough to " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                 }
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        connector.getObjectives();
     }
 
     public static double distFrom(double userLat, double userLong, double objLat, double objLong) {
@@ -122,6 +130,11 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
                 public void run() {
                     objectives = objectivesList;
                     Toast.makeText(getApplicationContext(), "Objectives Received", Toast.LENGTH_LONG).show();
+                    adapter.clear();
+                    for (int i = 0; i < objectives.size(); i++) {
+                        Log.e("test", objectives.get(i).getName());
+                        adapter.add(objectives.get(i).getName());
+                    }
                 }
             });
         }

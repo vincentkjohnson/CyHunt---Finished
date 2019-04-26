@@ -36,7 +36,9 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
                 try {
                     editText_login_username = (EditText) findViewById(R.id.userName);
                     editText_login_password = (EditText) findViewById(R.id.passwordBox);
-                    connector.LoginUser(editText_login_username.getText().toString(), editText_login_password.getText().toString());
+                    if (editText_login_password != null && editText_login_username != null) {
+                        connector.LoginUser(editText_login_username.getText().toString(), editText_login_password.getText().toString());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
