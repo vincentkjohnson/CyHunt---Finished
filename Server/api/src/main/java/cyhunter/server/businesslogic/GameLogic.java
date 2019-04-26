@@ -24,6 +24,7 @@ import java.util.*;
 public class GameLogic implements IGameLogic {
 
     private static int DEFAULT_RADIUS = 15;
+    private final List<Integer> STANDARD_LOCATION_IDs = new ArrayList<Integer>() { { add(72); add(103); } };
 
     @Autowired
     GameLocationsService glService;
@@ -172,7 +173,11 @@ public class GameLogic implements IGameLogic {
             gameLocations = new ArrayList<>();
             Random rnd = new Random();
 
-            for(int i = 0; i < 10; i++){
+            for(Integer i : this.STANDARD_LOCATION_IDs){
+                buildings.add(this.bService.findById(i));
+            }
+
+            for(int i = this.STANDARD_LOCATION_IDs.size() - 1; i < 10; i++){
                 Integer nextIndex = rnd.nextInt(ids.size());
                 Integer nextId = ids.get(nextIndex);
 
