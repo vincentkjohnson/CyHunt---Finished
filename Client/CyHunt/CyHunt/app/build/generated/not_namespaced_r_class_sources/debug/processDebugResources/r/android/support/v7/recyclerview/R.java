@@ -137,7 +137,7 @@ public final class R {
         public static final int text2 = 0x7f090141;
         public static final int time = 0x7f09014c;
         public static final int title = 0x7f09014d;
-        public static final int top = 0x7f090152;
+        public static final int top = 0x7f090153;
     }
     public static final class integer {
         private integer() {}
@@ -157,19 +157,19 @@ public final class R {
     public static final class string {
         private string() {}
 
-        public static final int status_bar_notification_info_overflow = 0x7f0e0092;
+        public static final int status_bar_notification_info_overflow = 0x7f0f0093;
     }
     public static final class style {
         private style() {}
 
-        public static final int TextAppearance_Compat_Notification = 0x7f0f011d;
-        public static final int TextAppearance_Compat_Notification_Info = 0x7f0f011e;
-        public static final int TextAppearance_Compat_Notification_Line2 = 0x7f0f0120;
-        public static final int TextAppearance_Compat_Notification_Time = 0x7f0f0123;
-        public static final int TextAppearance_Compat_Notification_Title = 0x7f0f0125;
-        public static final int Widget_Compat_NotificationActionContainer = 0x7f0f01dc;
-        public static final int Widget_Compat_NotificationActionText = 0x7f0f01dd;
-        public static final int Widget_Support_CoordinatorLayout = 0x7f0f020e;
+        public static final int TextAppearance_Compat_Notification = 0x7f10011d;
+        public static final int TextAppearance_Compat_Notification_Info = 0x7f10011e;
+        public static final int TextAppearance_Compat_Notification_Line2 = 0x7f100120;
+        public static final int TextAppearance_Compat_Notification_Time = 0x7f100123;
+        public static final int TextAppearance_Compat_Notification_Title = 0x7f100125;
+        public static final int Widget_Compat_NotificationActionContainer = 0x7f1001dc;
+        public static final int Widget_Compat_NotificationActionText = 0x7f1001dd;
+        public static final int Widget_Support_CoordinatorLayout = 0x7f10020e;
     }
     public static final class styleable {
         private styleable() {}

@@ -1,6 +1,7 @@
 package com.example.cyhunt.cyhunt;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -10,6 +11,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -43,13 +46,15 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     private double latitude = 42.02595;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    private String user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective_screen);
-        final String username = getIntent().getExtras().toString();
+        user = getIntent().getExtras().toString();
+        final String username = user;
         parent = this;
 
         mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this)
@@ -154,5 +159,26 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public  boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.to_leaderboard:
+                Intent intent = new Intent(  this, LeaderboardActivity.class);
+                intent.putExtra("username", user);
+                startActivity(intent);
+                break;
+        }
+
+        return true;
     }
 }
