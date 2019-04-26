@@ -18,6 +18,7 @@ import java.util.List;
 public class LeaderboardFragment extends Fragment {
     int position;
     private ListView listView;
+    private String user;
 
     public static Fragment getInstance(int position) {
         Bundle bundle = new Bundle();
@@ -31,6 +32,7 @@ public class LeaderboardFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt("pos");
+
     }
 
     @Override
@@ -51,7 +53,7 @@ public class LeaderboardFragment extends Fragment {
         } else if (position == 1 ) {
             adapter.add("weekly");
         } else {
-            adapter.add("error");
+            adapter.add("error: position does not exist: " + Integer.toString(position));
         }
         listView.setAdapter(adapter);
 

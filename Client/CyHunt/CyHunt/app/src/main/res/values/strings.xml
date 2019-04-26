@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CyHunt</string>
     <string name="login">Login</string>
+    <string name="leaderboard">Leaderboard</string>
 </resources>

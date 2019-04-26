@@ -1896,6 +1896,7 @@ id title
 id titleDividerNoCustom
 id title_template
 id title_view
+id to_leaderboard
 id toolbar
 id top
 id topPanel
@@ -2030,6 +2031,7 @@ layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
 layout wallet_test_layout
+menu menu_main
 mipmap ic_launcher
 mipmap ic_launcher_round
 string abc_action_bar_home_description
@@ -2140,6 +2142,7 @@ string fab_transformation_sheet_behavior
 string fcm_fallback_notification_channel_label
 string gcm_fallback_notification_channel_label
 string hide_bottom_view_on_scroll_behavior
+string leaderboard
 string login
 string mr_button_content_description
 string mr_cast_button_connected
