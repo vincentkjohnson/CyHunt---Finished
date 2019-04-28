@@ -43,6 +43,7 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private List<Objective> objectives = new ArrayList<>();
+    Objective selObj = null;
     private double longitude = -93.64999;
     private double latitude = 42.02595;
     private GoogleApiClient mGoogleApiClient;
@@ -78,7 +79,6 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedObjective = objectivesName.get(position);
-                Objective selObj = null;
                 for (int i = 0; i < objectivesName.size(); i++) {
                     if (objectives.get(i).getName() == selectedObjective) {
                         selObj = objectives.get(i);
@@ -88,7 +88,6 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
                     Toast.makeText(getApplicationContext(), "You found " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                     adapter.remove(selectedObjective);
                     connector.updateScore(username, selectedObjective);
-                    score += selObj.getCurrentPoints();
 
                 } else {
                     Toast.makeText(getApplicationContext(), "You're not close enough to " + selectedObjective + "!", Toast.LENGTH_LONG).show();
@@ -119,7 +118,18 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
 
     @Override
     public void handleResult(UserResponse response) {
-
+        if (response != null) {
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (response.isSuccess()) {
+                        score += selObj.getCurrentPoints();
+                    } else {
+                        Toast.makeText(getApplicationContext(), response.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override
