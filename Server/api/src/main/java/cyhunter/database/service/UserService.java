@@ -1,7 +1,7 @@
-package cyhunter.server.service;
+package cyhunter.database.service;
 
-import cyhunter.server.dao.UserRepository;
-import cyhunter.server.entity.User;
+import cyhunter.database.dao.UserRepository;
+import cyhunter.database.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class UserService {
     }
 
     public User findByUserName(String username){
-        User result = userRepository.findByUsername(username);
+        User result = userRepository.findByUsernameIgnoreCase(username);
         return result;
     }
 
@@ -26,8 +26,7 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public Boolean deleteUserByUserName(String username)
-    {
+    public Boolean deleteUserByUserName(String username) {
         User target = findByUserName(username);
         if(target != null){
             userRepository.delete(target);
@@ -35,4 +34,6 @@ public class UserService {
         }
         return false;
     }
+
+    public User findByUserId(int userId) { return userRepository.findFirstById(userId); }
 }

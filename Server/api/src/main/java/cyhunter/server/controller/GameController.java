@@ -9,25 +9,28 @@ import cyhunter.server.models.UpdateUserScoreResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/game")
 @Api(value="scores", description="Operations pertaining to Game play")
 public class GameController {
 
-    private IGameLogic scoreLogic;
+    @Autowired
+    private IGameLogic gameLogic;
+
 
     public GameController(){
-        this.scoreLogic = new GameLogic();
+        this.gameLogic = new GameLogic();
     }
 
     public GameController(IGameLogic sl){
-        this.scoreLogic = sl;
+        this.gameLogic = sl;
     }
 
     /***
@@ -39,8 +42,8 @@ public class GameController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved Leader Board")
     })
-    public Set<LeaderBoardEntry> getWeeklyLeaderBoard(){
-        return this.scoreLogic.getWeeklyLeaderBoard();
+    public List<LeaderBoardEntry> getWeeklyLeaderBoard(){
+        return this.gameLogic.getWeeklyLeaderBoard();
     }
 
     /***
@@ -52,24 +55,24 @@ public class GameController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved Leader Board")
     })
-    public Set<LeaderBoardEntry> getDailyLeaderBoard() {
-        return this.scoreLogic.getDailyLeaderBoard();
+    public List<LeaderBoardEntry> getDailyLeaderBoard() {
+        return this.gameLogic.getDailyLeaderBoard();
     }
 
     /***
      * Gets the requesting User's daily Score
-     * @param uId The Id of the User to get the daily Score for
+     * @param username The Id of the User to get the daily Score for
      * @return An int
      */
-    @GetMapping(path="/dailyuserscore/{uId}", produces = "application/json")
+    @GetMapping(path="/dailyuserscore/{username}", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code=200, message="Succesfully retrieved score"),
             @ApiResponse(code=404, message = "Could not find User with that Id")
     })
-    public int getDailyUserScore(@PathVariable int uId){
+    public int getDailyUserScore(@PathVariable String username){
 
         try {
-            int result = this.scoreLogic.getDailyUserScore(uId);
+            int result = this.gameLogic.getDailyUserScore(username);
             return result;
         } catch (IllegalArgumentException iEx){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No user with that Id could be found");
@@ -78,16 +81,16 @@ public class GameController {
 
     /***
      * Gets the requesting User's weekly Score
-     * @param uId The Id of the User requesting the weekly score
+     * @param username The Id of the User requesting the weekly score
      * @return An int
      */
-    @GetMapping(path="/weeklyuserscore/{uId}", produces = "application/json")
+    @GetMapping(path="/weeklyuserscore/{username}", produces = "application/json")
     @ApiResponses({
             @ApiResponse(code=200, message="Succesfully retrieved score"),
             @ApiResponse(code=404, message = "Could not find User with that Id")
     })
-    public int getWeeklyUserScore(@PathVariable int uId){
-        return this.scoreLogic.getWeeklyUserScore(uId);
+    public int getWeeklyUserScore(@PathVariable String username){
+        return this.gameLogic.getWeeklyUserScore(username);
     }
 
     /***
@@ -102,7 +105,7 @@ public class GameController {
             @ApiResponse(code=404, message = "Could not find User with that Id")
     })
     public UpdateUserScoreResult updateUserScore(@RequestBody UpdateUserScoreRequest uus){
-        return this.scoreLogic.updateUserScore(uus.getUserId(), uus.getLocationId());
+        return this.gameLogic.updateUserScore(uus.getUsername(), uus.getLocationName());
     }
 
     /***
@@ -113,7 +116,7 @@ public class GameController {
     @ApiResponses({
             @ApiResponse(code=200, message="Succesfully retrieved objectives")
     })
-    public Set<Objective> getGameObjectives(){
-        return this.scoreLogic.getGameObjectives();
+    public List<Objective> getGameObjectives(){
+        return this.gameLogic.getGameObjectives();
     }
 }

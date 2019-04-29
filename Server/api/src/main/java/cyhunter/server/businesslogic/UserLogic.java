@@ -1,14 +1,12 @@
 package cyhunter.server.businesslogic;
 
-import cyhunter.server.entity.User;
+import cyhunter.database.entity.User;
 import cyhunter.server.models.AddUserResult;
 import cyhunter.server.models.LoginUserResult;
-import cyhunter.server.service.UserService;
+import cyhunter.database.service.UserService;
 import org.apache.commons.codec.digest.DigestUtils;
-import cyhunter.server.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /***
