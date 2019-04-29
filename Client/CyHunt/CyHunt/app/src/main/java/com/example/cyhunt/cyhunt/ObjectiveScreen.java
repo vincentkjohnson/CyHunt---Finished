@@ -1,13 +1,14 @@
 package com.example.cyhunt.cyhunt;
 
 import android.Manifest;
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,20 +21,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
 
-import java.io.FileDescriptor;
-import java.io.PrintWriter;
-import java.text.BreakIterator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 
 public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticationClient.ApiResultHandler, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -56,13 +48,11 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective_screen);
-        user = getIntent().getExtras().toString();
+        user = (String)getIntent().getExtras().get("username");
         final String username = user;
         parent = this;
 
-
         this.setTitle("Score: " + score);
-
 
         mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
@@ -87,7 +77,7 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
                 if (distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude()) < 0.005) {
                     Toast.makeText(getApplicationContext(), "You found " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                     adapter.remove(selectedObjective);
-                    connector.updateScore(username, selectedObjective);
+                    connector.updateScore(user, selectedObjective);
 
                 } else {
                     Toast.makeText(getApplicationContext(), "You're not close enough to " + selectedObjective + "!", Toast.LENGTH_LONG).show();
@@ -103,6 +93,18 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     }
 
     public static double distFrom(double userLat, double userLong, double objLat, double objLong) {
+        /*
+        Location l1 = new Location("");
+        l1.setLatitude(userLat);
+        l1.setLongitude(userLong);
+
+        Location l2 = new Location("");
+        l2.setLatitude(objLat);
+        l2.setLongitude(objLong);
+
+        return l1.distanceTo(l2);
+        */
+
         double earthRadius = 3958.75; // miles (or 6371.0 kilometers)
         double dLat = Math.toRadians(objLat - userLat);
         double dLng = Math.toRadians(objLong - userLong);
@@ -114,6 +116,7 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
         double dist = earthRadius * c;
 
         return dist;
+
     }
 
     @Override
@@ -153,6 +156,25 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     @Override
     public void handleLeaderBoardListResult(List<LeaderboardEntry> leaderboards) {
 
+    }
+
+    @Override
+    public void handleScoreUpdateResult(ScoreResponse response) {
+        if (response != null) {
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (response.getResult()) {
+                        score = response.getDailyScore();
+                        Toast.makeText(getApplicationContext(), "You earned " + response.getPointesEarned() + " points!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), response.getMessage().replace("User", "You"), Toast.LENGTH_LONG).show();
+                    }
+
+                    setTitle("Score: " + response.getDailyScore());
+                }
+            });
+        }
     }
 
     @Override

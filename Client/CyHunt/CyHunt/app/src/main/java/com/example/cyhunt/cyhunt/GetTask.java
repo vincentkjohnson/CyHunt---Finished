@@ -57,7 +57,7 @@ public class GetTask extends AsyncTask<String, Integer, ResponseWrapper> {
                 if(responseCode == 200){
                     this.mGetResultHandler.getResult(readStream(conn.getInputStream()), rType);
                 } else {
-                    this.mGetResultHandler.getResult("Response Code: " + Integer.toString(responseCode), rType);
+                    this.mGetResultHandler.getResult("Response Code: " + Integer.toString(responseCode), -1);
                 }
             }
         } catch (MalformedURLException e) {

@@ -2,6 +2,8 @@ package com.example.cyhunt.cyhunt;
 
 
 
+import android.util.Log;
+
 import java.util.List;
 
 public class ApiAuthenticationClient implements GetTask.GetResultHandler {
@@ -13,6 +15,7 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
         void handleResult(UserResponse response);
         void handleObjectiveListResult(List<Objective> objectives);
         void handleLeaderBoardListResult(List<LeaderboardEntry> leaderboards);
+        void handleScoreUpdateResult(ScoreResponse result);
     }
 
     private final String baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
@@ -55,9 +58,9 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
     public void updateScore(String username, String location) {
         gettingObjectives = false;
         gettingLeaderboard = false;
-        UserRequest req = new UserRequest(username, location);
+        ScoreRequest req = new ScoreRequest(username, location);
         GetTask task = new GetTask(ApiAuthenticationClient.this);
-        task.execute(updateScore, req.toJson(), "POST", "0");
+        task.execute(updateScore, req.toJson(), "PUT", "3");
 
     }
 
@@ -80,6 +83,10 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
             this.resultHandler.handleObjectiveListResult(Objective.getFromJson(result));
         } else if (resultType == 2) {
             this.resultHandler.handleLeaderBoardListResult(LeaderboardEntry.getFromJson(result));
+        } else if(resultType == 3){
+            this.resultHandler.handleScoreUpdateResult(ScoreResponse.fromJson(result));
+        } else if(resultType == -1){
+            Log.e("ApiAuthenticationClient", result);
         }
     }
 }
