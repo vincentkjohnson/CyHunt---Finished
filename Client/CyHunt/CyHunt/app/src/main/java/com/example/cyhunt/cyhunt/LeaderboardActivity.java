@@ -1,26 +1,68 @@
 package com.example.cyhunt.cyhunt;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 
-public class LeaderboardActivity extends AppCompatActivity {
+public class LeaderboardActivity extends FragmentActivity {
 
-    ListView list;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboard);
+/*
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        list = (ListView) findViewById(R.id.leaderboard_list);
-        ArrayList<String> leaders = new ArrayList();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_listview, leaders);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+*/
+        viewPager = (ViewPager) findViewById(R.id.pager);
 
-        list.setAdapter(adapter);
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
 
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private String title[] = {"Daily", "Weekly"};
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return LeaderboardFragment.getInstance(position);
+        }
+
+        @Override
+        public int getCount() {
+            return title.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return title[position];
+        }
     }
 }

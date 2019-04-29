@@ -46,6 +46,25 @@
                         "endColumns": "74,77,74",
                         "endOffsets": "844,922,997"
                     }
+                },
+                {
+                    "source": "C:\\Users\\Riku Morishima\\.gradle\\caches\\transforms-1\\files-1.1\\design-28.0.0.aar\\3c732481cd564cf68995e34b977ed33e\\res\\values-land\\values-land.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "10",
+                        "endOffsets": "222"
+                    },
+                    "to": {
+                        "startLines": "14",
+                        "startColumns": "4",
+                        "startOffsets": "1002",
+                        "endLines": "17",
+                        "endColumns": "10",
+                        "endOffsets": "1169"
+                    }
                 }
             ]
         }

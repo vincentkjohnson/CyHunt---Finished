@@ -10,16 +10,15 @@ import android.widget.Toast;
 
 import com.example.cyhunt.cyhunt.ApiAuthenticationClient.ApiResultHandler;
 
+import java.util.List;
 
 public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
     private Button button_login_login;
     private EditText editText_login_username;
     private EditText editText_login_password;
-
     private final ApiAuthenticationClient connector = new ApiAuthenticationClient((ApiResultHandler)this);
     private static HomeScreen parent;
-
 
 
 
@@ -37,7 +36,9 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
                 try {
                     editText_login_username = (EditText) findViewById(R.id.userName);
                     editText_login_password = (EditText) findViewById(R.id.passwordBox);
-                    connector.LoginUser(editText_login_username.getText().toString(), editText_login_password.getText().toString());
+                    if (editText_login_password != null && editText_login_username != null) {
+                        connector.LoginUser(editText_login_username.getText().toString(), editText_login_password.getText().toString());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -49,6 +50,7 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
     public void openMainActivity() {
         Intent intent = new Intent(  this, ObjectiveScreen.class);
+        intent.putExtra("username", editText_login_username.toString());
         startActivity(intent);
     }
 
@@ -77,16 +79,11 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
     }
 
     @Override
-    public void handleResultArray(final ObjectiveResponse response) {
-        if (response != null) {
-            parent.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (response.isSuccess()) {
-                        System.out.print(response.getMessage());
-                    }
-                }
-            });
-        }
+    public void handleObjectiveListResult(final List<Objective> objectives) {
+    }
+
+    @Override
+    public void handleLeaderBoardListResult(List<LeaderboardEntry> leaderboards) {
+
     }
 }

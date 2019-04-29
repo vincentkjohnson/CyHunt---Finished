@@ -1,48 +1,84 @@
 package com.example.cyhunt.cyhunt;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.Api;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationServices;
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.text.BreakIterator;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 
-public class ObjectiveScreen extends AppCompatActivity  {
+public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticationClient.ApiResultHandler, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private static ObjectiveScreen parent;
+    private final ApiAuthenticationClient connector = new ApiAuthenticationClient((ApiAuthenticationClient.ApiResultHandler) this);
     private ListView listView;
+    private ArrayAdapter<String> adapter;
     private List<Objective> objectives = new ArrayList<>();
+    Objective selObj = null;
     private double longitude = -93.64999;
     private double latitude = 42.02595;
-
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+    private String user;
+    private int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective_screen);
+        user = getIntent().getExtras().toString();
+        final String username = user;
+        parent = this;
 
-        listView = (ListView) findViewById(R.id.listview);
 
-        final List<String> objectivesName = new ArrayList<>();
+        this.setTitle("Score: " + score);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, objectivesName);
-        setUp();
-        for (int i = 0; i < objectives.size(); i++) {
-            adapter.add(objectives.get(i).getName());
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
         }
 
+        listView = (ListView) findViewById(R.id.listview);
+        final List<String> objectivesName = new ArrayList<>();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, objectivesName);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedObjective = objectivesName.get(position);
-                Objective selObj = null;
                 for (int i = 0; i < objectivesName.size(); i++) {
                     if (objectives.get(i).getName() == selectedObjective) {
                         selObj = objectives.get(i);
@@ -51,6 +87,8 @@ public class ObjectiveScreen extends AppCompatActivity  {
                 if (distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude()) < 0.005) {
                     Toast.makeText(getApplicationContext(), "You found " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                     adapter.remove(selectedObjective);
+                    connector.updateScore(username, selectedObjective);
+
                 } else {
                     Toast.makeText(getApplicationContext(), "You're not close enough to " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                 }
@@ -58,19 +96,10 @@ public class ObjectiveScreen extends AppCompatActivity  {
         });
     }
 
-
-    public void setUp() {
-        objectives.add(new Objective(42.02965, -93.65095, 5.0, "Armory", ""));
-        objectives.add(new Objective(42.02856, -93.64467, 5.0, "Bessey Hall", ""));
-        objectives.add(new Objective(42.03469, -93.64558, 5.0, "Administrative Building", ""));
-        objectives.add(new Objective(42.02523, -93.64931, 5.0, "Enrollment Services Center", ""));
-        objectives.add(new Objective(42.02531, -93.64839, 5.0, "Carver Hall", ""));
-        objectives.add(new Objective(42.02992, -93.64016, 5.0, "Agronomy Greenhouse", ""));
-        objectives.add(new Objective(42.02363, -93.64155, 5.0, "Birch Residence Hall", ""));
-        objectives.add(new Objective(42.02992, -93.64203, 5.0, "Crop Genome Informatics Laboratory", ""));
-        objectives.add(new Objective(42.02439, -93.64154, 5.0, "Barton Residence Hall", ""));
-        objectives.add(new Objective(42.03109, -93.65119, 5.0, "Communications Building", ""));
-        objectives.add(new Objective(42.02595, -93.64999, 5.0, "Pearson Hall", ""));
+    @Override
+    public void onStart() {
+        super.onStart();
+        connector.getObjectives();
     }
 
     public static double distFrom(double userLat, double userLong, double objLat, double objLong) {
@@ -87,4 +116,92 @@ public class ObjectiveScreen extends AppCompatActivity  {
         return dist;
     }
 
+    @Override
+    public void handleResult(UserResponse response) {
+        if (response != null) {
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (response.isSuccess()) {
+                        score += selObj.getCurrentPoints();
+                    } else {
+                        Toast.makeText(getApplicationContext(), response.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void handleObjectiveListResult(final List<Objective> objectivesList) {
+        if (objectivesList != null && !objectivesList.isEmpty()) {
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    objectives = objectivesList;
+                    Toast.makeText(getApplicationContext(), "Objectives Received", Toast.LENGTH_LONG).show();
+                    adapter.clear();
+                    for (int i = 0; i < objectives.size(); i++) {
+                        Log.e("test", objectives.get(i).getName());
+                        adapter.add(objectives.get(i).getName());
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    public void handleLeaderBoardListResult(List<LeaderboardEntry> leaderboards) {
+
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            latitude = mLastLocation.getLatitude();
+            longitude = mLastLocation.getLongitude();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public  boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.to_leaderboard:
+                Intent intent = new Intent(  this, LeaderboardActivity.class);
+                intent.putExtra("username", user);
+                startActivity(intent);
+                break;
+        }
+
+        return true;
+    }
 }
