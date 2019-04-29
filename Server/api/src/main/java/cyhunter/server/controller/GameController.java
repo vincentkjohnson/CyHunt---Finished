@@ -24,6 +24,7 @@ public class GameController {
     @Autowired
     private IGameLogic gameLogic;
 
+
     public GameController(){
         this.gameLogic = new GameLogic();
     }

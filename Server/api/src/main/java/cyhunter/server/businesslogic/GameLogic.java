@@ -27,16 +27,16 @@ public class GameLogic implements IGameLogic {
     private final List<Integer> STANDARD_LOCATION_IDs = new ArrayList<Integer>() { { add(72); add(103); } };
 
     @Autowired
-    GameLocationsService glService;
+    private GameLocationsService glService;
 
     @Autowired
-    BuildingService bService;
+    private BuildingService bService;
 
     @Autowired
-    UserGamesService ugService;
+    private UserGamesService ugService;
 
     @Autowired
-    UserService uService;
+    private UserService uService;
 
     /***
      * Gets the weekly Leader Board
