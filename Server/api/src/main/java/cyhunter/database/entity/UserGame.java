@@ -15,9 +15,6 @@ public class UserGame {
 	@Column(name = "id")
 	private int id;
 
-	// @ManyToOne(fetch = FetchType.LAZY, optional = false)
-	// @JoinColumn(name = "user_id")
-	// @OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne
 	@JoinColumn
 	private User user;
@@ -25,9 +22,8 @@ public class UserGame {
 	@Column(name = "gameDate")
 	private long gameDate;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name="gameLocation_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn
 	private GameLocation gameLocation;
 
 	@Column(name = "points")
@@ -63,9 +59,9 @@ public class UserGame {
 		this.point -= point;
 	}
 
-	public GameLocation getGameLocations(){return this.gameLocation;}
+	public GameLocation getGameLocation(){return this.gameLocation;}
 
-	public void setGameLocations(GameLocation gameLocations){this.gameLocation = gameLocations;}
+	public void setGameLocation(GameLocation gameLocations){this.gameLocation = gameLocations;}
 
 	public User getUser() { return this.user; }
 

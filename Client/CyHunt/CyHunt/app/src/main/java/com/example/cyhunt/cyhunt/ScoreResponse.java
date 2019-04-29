@@ -1,6 +1,8 @@
-package cyhunter.server.models;
+package com.example.cyhunt.cyhunt;
 
-public class UpdateUserScoreResult {
+import com.google.gson.Gson;
+
+public class ScoreResponse {
 
     private boolean result;
 
@@ -12,7 +14,7 @@ public class UpdateUserScoreResult {
 
     private int weeklyScore;
 
-    public UpdateUserScoreResult(boolean result, String message, int pointesEarned, int dailyScore, int weeklyScore) {
+    public ScoreResponse(boolean result, String message, int pointesEarned, int dailyScore, int weeklyScore) {
         this.result = result;
         this.message = message;
         this.pointesEarned = pointesEarned;
@@ -58,5 +60,15 @@ public class UpdateUserScoreResult {
 
     public void setWeeklyScore(int weeklyScore) {
         this.weeklyScore = weeklyScore;
+    }
+
+    public String toJson(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static ScoreResponse fromJson(String json){
+        Gson gson = new Gson();
+        return gson.fromJson(json, ScoreResponse.class);
     }
 }

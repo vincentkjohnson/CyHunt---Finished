@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cyhunt.cyhunt.ApiAuthenticationClient.ApiResultHandler;
@@ -50,7 +51,7 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
     public void openMainActivity() {
         Intent intent = new Intent(  this, ObjectiveScreen.class);
-        intent.putExtra("username", editText_login_username.toString());
+        intent.putExtra("username", editText_login_username.getText().toString());
         startActivity(intent);
     }
 
@@ -84,6 +85,11 @@ public class HomeScreen extends AppCompatActivity implements ApiResultHandler {
 
     @Override
     public void handleLeaderBoardListResult(List<LeaderboardEntry> leaderboards) {
+
+    }
+
+    @Override
+    public void handleScoreUpdateResult(ScoreResponse result) {
 
     }
 }

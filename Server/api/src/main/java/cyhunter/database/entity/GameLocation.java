@@ -4,6 +4,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class GameLocation {
@@ -20,10 +21,8 @@ public class GameLocation {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Building building;
 
-    // @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    // @JoinColumn(name="userGame_id")
-    // @OnDelete(action = OnDeleteAction.CASCADE)
-    // private UserGame userGame;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserGame> userGames;
 
     public int getId(){return this.id;}
 
@@ -34,7 +33,4 @@ public class GameLocation {
     public Building getBuilding(){return this.building; }
 
     public void setBuilding(Building bldg){this.building = bldg;}
-
-    // public UserGame getUserGame(){return  this.userGame;}
-    // public void setUserGame(UserGame ugame){this.userGame = ugame;}
 }
