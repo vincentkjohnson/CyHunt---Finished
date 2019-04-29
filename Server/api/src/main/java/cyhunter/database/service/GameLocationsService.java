@@ -18,4 +18,8 @@ public class GameLocationsService {
     public List<GameLocation> findByDate(long dt) { return gameLocationsRepository.findAllByGameDate(dt); }
 
     public GameLocation save(GameLocation gl) { return gameLocationsRepository.save(gl); }
+
+    public GameLocation findByDateAndBuildingId(long dt, int buildingId){
+        return gameLocationsRepository.findByDateAndBuildingId(dt, buildingId);
+    }
 }

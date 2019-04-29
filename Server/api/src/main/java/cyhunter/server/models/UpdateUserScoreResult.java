@@ -20,7 +20,7 @@ public class UpdateUserScoreResult {
         this.weeklyScore = weeklyScore;
     }
 
-    public boolean isResult() {
+    public boolean getResult() {
         return result;
     }
 

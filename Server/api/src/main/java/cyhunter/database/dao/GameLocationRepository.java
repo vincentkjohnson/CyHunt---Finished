@@ -11,6 +11,12 @@ public interface GameLocationRepository extends JpaRepository<GameLocation,Integ
 
     GameLocation findById(int id);
 
+    @Query("SELECT gl FROM GameLocation gl WHERE gameDate = :dt AND building_id = :bldId")
+    GameLocation findByDateAndBuildingId(
+        @Param("dt") long dt,
+        @Param("bldId") int buildingId
+    );
+
     @Query("SELECT gl FROM GameLocation gl WHERE gameDate = :dt")
     List<GameLocation> findAllByGameDate(
         @Param("dt") long dt);

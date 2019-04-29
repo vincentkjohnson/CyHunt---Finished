@@ -141,7 +141,7 @@ public class GameLogic implements IGameLogic {
                 this.getWeeklyUserScore(user.getUserName()));
         }
 
-        GameLocation gl = new GameLocation();
+        GameLocation gl = glService.findByDateAndBuildingId(getNDaysAgoMillis(0), building.getId());
         gl.setBuilding(this.bService.findById(obj.getLocationId()));
         gl.setDate(getNDaysAgoMillis(0));
         int points = obj.getCurrentPoints();
@@ -149,7 +149,8 @@ public class GameLogic implements IGameLogic {
         ug = new UserGame();
         ug.setDate(getNDaysAgoMillis(0));
         ug.setPoint(points);
-        ug.setGameLocations(gl);
+        ug.setGameLocation(gl);
+        ug.setUser(user);
         this.ugService.save(ug);
 
         return new UpdateUserScoreResult(true,
@@ -178,8 +179,21 @@ public class GameLogic implements IGameLogic {
             }
 
             for(int i = this.STANDARD_LOCATION_IDs.size() - 1; i < 10; i++){
-                Integer nextIndex = rnd.nextInt(ids.size());
-                Integer nextId = ids.get(nextIndex);
+                boolean alreadyExists = true;
+                Integer nextId = -1;
+
+                while(alreadyExists) {
+                    Integer nextIndex = rnd.nextInt(ids.size());
+                    nextId = ids.get(nextIndex);
+
+                    alreadyExists = false;
+                    for(Building b : buildings){
+                        if(b.getId() == nextId){
+                            alreadyExists = true;
+                            break;
+                        }
+                    }
+                }
 
                 buildings.add(this.bService.findById(nextId));
             }
