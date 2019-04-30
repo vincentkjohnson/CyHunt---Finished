@@ -249,6 +249,7 @@ public class GameLogic implements IGameLogic {
             cyhunter.database.entity.User u = leader.getUser();
             LeaderBoardEntry lb = new LeaderBoardEntry(position, u.getUserName(), leader.getPoint());
             result.add(lb);
+            position++;
         }
 
         return result;
