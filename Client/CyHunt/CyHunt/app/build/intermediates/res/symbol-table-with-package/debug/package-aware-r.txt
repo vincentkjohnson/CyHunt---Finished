@@ -730,6 +730,7 @@ color bright_foreground_material_dark
 color bright_foreground_material_light
 color button_material_dark
 color button_material_light
+color cardinalRed
 color cardview_dark_background
 color cardview_light_background
 color cardview_shadow_end_color
@@ -780,6 +781,7 @@ color error_color_material_dark
 color error_color_material_light
 color foreground_material_dark
 color foreground_material_light
+color gold
 color highlighted_text_material_dark
 color highlighted_text_material_light
 color material_blue_grey_800
