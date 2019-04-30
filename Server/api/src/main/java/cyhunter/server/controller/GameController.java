@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -118,5 +120,13 @@ public class GameController {
     })
     public List<Objective> getGameObjectives(){
         return this.gameLogic.getGameObjectives();
+    }
+
+    @GetMapping(path="/gettime", produces = "application/json")
+    @ApiResponses({
+        @ApiResponse(code=200, message="Time Retrieved")
+    })
+    public String GetTime(){
+        return " { \"time\": " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + " }";
     }
 }

@@ -225,8 +225,9 @@ public class GameLogic implements IGameLogic {
     private int getCurrentPointValue(Date dt){
         Calendar calendar = GregorianCalendar.getInstance();
         calendar.setTime(dt);
+        calendar.add(Calendar.HOUR_OF_DAY, -5);
 
-        return 24- calendar.get(Calendar.HOUR_OF_DAY);
+        return 24 - calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     private long getNDaysAgoMillis(int n) {
