@@ -38,8 +38,8 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     private ArrayAdapter<String> adapter;
     private List<Objective> objectives = new ArrayList<>();
     Objective selObj = null;
-    private double longitude = -93.64999;
-    private double latitude = 42.02595;
+    private double longitude;
+    private double latitude;
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private com.google.android.gms.location.LocationListener listener;
@@ -54,6 +54,9 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        connector.getObjectives();
+
         user = (String)getIntent().getExtras().get("username");
         final String username = user;
         parent = this;
@@ -65,6 +68,14 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
 
+        listener = new LocationListener() {
+
+            @Override
+            public void onLocationChanged(Location location) {
+                latitude = mLocation.getLatitude();
+                longitude = mLocation.getLongitude();
+            }
+        };
         mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         listView = (ListView) findViewById(R.id.listview);
@@ -81,13 +92,16 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
                         selObj = objectives.get(i);
                     }
                 }
-                if (distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude()) < 0.005) {
+                double distance = distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude());
+                if (distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude()) < 100) {
                     Toast.makeText(getApplicationContext(), "You found " + selectedObjective + "!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Lat: " + latitude + " " + "Long: " + longitude, Toast.LENGTH_LONG).show();
                     adapter.remove(selectedObjective);
                     connector.updateScore(user, selectedObjective);
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "You're not close enough to " + selectedObjective + "!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You're are " + distance + " feet from: " + selectedObjective + "!", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), "Lat: " + latitude + " " + "Long: " + longitude, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -96,7 +110,6 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     @Override
     public void onStart() {
         super.onStart();
-        connector.getObjectives();
         mGoogleApiClient.connect();
     }
 
@@ -106,7 +119,7 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
         mGoogleApiClient.disconnect();
     }
 
-    public static double distFrom(double userLat, double userLong, double objLat, double objLong) {
+    public static int distFrom(double userLat, double userLong, double objLat, double objLong) {
         /*
         Location l1 = new Location("");
         l1.setLatitude(userLat);
@@ -129,7 +142,7 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double dist = earthRadius * c;
 
-        return dist;
+        return (int) (dist * 5280);
 
     }
 
@@ -193,7 +206,7 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -201,7 +214,7 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION , Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         }
 
         startLocationUpdates();
@@ -217,7 +230,7 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
 
     public void startLocationUpdates() {
         mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(1000).setFastestInterval(1000);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -225,9 +238,9 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            return;
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION , Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (LocationListener) this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, listener);
     }
 
     @Override
