@@ -132,7 +132,7 @@ public class GameLogic implements IGameLogic {
         }
 
         // Ensure User hasn't achieved Objective yet.
-        UserGame ug = this.ugService.findByUserIdAndGameDate(user.getId(), getNDaysAgoMillis(0));
+        UserGame ug = this.ugService.findByUserIdAndGameDateAndLocation(user.getId(), getNDaysAgoMillis(0), building.getId());
         if(ug != null){
             return new UpdateUserScoreResult(false,
                 "User Already Achieved Objective",
@@ -161,6 +161,27 @@ public class GameLogic implements IGameLogic {
         );
     }
 
+    public List<Objective> getUserObjectives(String username){
+        cyhunter.database.entity.User user = this.uService.findByUserName(username);
+        List<Objective> myObjectives = new ArrayList<>();
+
+        // Validate User
+        if(user == null){
+            return myObjectives;
+        }
+
+        List<Objective> gameObjectives = this.getGameObjectives();
+
+        for(Objective objective : gameObjectives){
+            UserGame ug = this.ugService.findByUserIdAndGameDateAndLocation(user.getId(), getNDaysAgoMillis(0), objective.getLocationId());
+            if(ug == null){
+                myObjectives.add(objective);
+            }
+        }
+
+        return myObjectives;
+    }
+
     private List<Objective> getCurrentObjectives(boolean createIfNoGame){
         List<Objective> result = new ArrayList<>();
         long dt = this.getNDaysAgoMillis(0);
@@ -178,7 +199,7 @@ public class GameLogic implements IGameLogic {
                 buildings.add(this.bService.findById(i));
             }
 
-            for(int i = this.STANDARD_LOCATION_IDs.size() - 1; i < 10; i++){
+            for(int i = this.STANDARD_LOCATION_IDs.size(); i < 10; i++){
                 boolean alreadyExists = true;
                 Integer nextId = -1;
 
