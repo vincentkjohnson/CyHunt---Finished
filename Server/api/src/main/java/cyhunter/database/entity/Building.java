@@ -1,4 +1,6 @@
-package cyhunter.database.entity;
+/**
+ * @author: Zechen Huang
+ */package cyhunter.database.entity;
 
 //This table should never been modify unless someday we will decide we need to add more buildings. This table include all the buildings.
 import com.sun.org.apache.xpath.internal.operations.Equals;
@@ -22,11 +24,13 @@ public class Building {
         this.lattitude = lattitude;
     }
 
+    //this is the prime key of every building
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    //all that below is the Attributes
     @Column(name = "Name")
     private String buildingname;
 

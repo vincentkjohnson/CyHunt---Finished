@@ -1,4 +1,6 @@
-package cyhunter.database.service;
+/**
+ * @author: Zechen Huang
+ */package cyhunter.database.service;
 
 import cyhunter.database.dao.GameLocationRepository;
 import cyhunter.database.entity.GameLocation;

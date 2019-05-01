@@ -1,4 +1,6 @@
-package cyhunter.database.dao;
+/**
+ * @author: Zechen Huang
+ */package cyhunter.database.dao;
 
 import cyhunter.database.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
