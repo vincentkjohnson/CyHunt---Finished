@@ -8,13 +8,14 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toolbar;
 
 import java.util.ArrayList;
 
-public class LeaderboardActivity extends FragmentActivity {
+public class LeaderboardActivity extends FragmentActivity implements LeaderboardFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -23,6 +24,7 @@ public class LeaderboardActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_leaderboard);
 /*
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -30,6 +32,7 @@ public class LeaderboardActivity extends FragmentActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 */
+
         viewPager = (ViewPager) findViewById(R.id.pager);
 
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
@@ -40,6 +43,11 @@ public class LeaderboardActivity extends FragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onFragmentInteraction(String title) {
+        getActionBar().setTitle(title);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {

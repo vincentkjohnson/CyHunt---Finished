@@ -22,6 +22,7 @@ import java.util.ListIterator;
 
 public class LeaderboardFragment extends Fragment implements ApiAuthenticationClient.ApiResultHandler{
 
+    private OnFragmentInteractionListener mListener;
     int position;
     private ListView listView;
     private String user;
@@ -42,12 +43,16 @@ public class LeaderboardFragment extends Fragment implements ApiAuthenticationCl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         position = getArguments().getInt("pos");
-
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction("Custom Title");
+        }
+
         return inflater.inflate(R.layout.leader_board_tab, container, false);
     }
 
@@ -90,28 +95,13 @@ public class LeaderboardFragment extends Fragment implements ApiAuthenticationCl
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    list = leaderboards;
-                    //get list of users in position order
-                    List<String> leaderList = new ArrayList<>() ;
-                    while(leaderList.size() < leaderboards.size()){
-                        int i = 0;
-                        for (i = 0; i < leaderboards.size(); i++) {
-                            if(leaderboards.get(i).getPosition() -1 == leaderList.size()) {
-                                leaderList.add(leaderboards.get(i).getPosition() + ". " +
-                                        leaderboards.get(i).getUsername());
-                                break;
-                            }
-                            // call functions to focus on user rank
-                        }
-                        if (i == leaderboards.size()) {
-                            break;
-                        }
-                    }
 
+                    //get list of users in position order
                     adapter.clear();
-                    for (int i = 0; i < leaderList.size(); i++) {
-                        Log.e("test", leaderList.get(i));
-                        adapter.add(leaderList.get(i));
+                    for(LeaderboardEntry leader : leaderboards){
+                        String nextEntry = leader.getPosition() + ". " + leader.getUsername() +
+                                "\t\t\tScore: " + leader.getScore();
+                        adapter.add(nextEntry);
                     }
 
                 }
@@ -122,5 +112,9 @@ public class LeaderboardFragment extends Fragment implements ApiAuthenticationCl
     @Override
     public void handleScoreUpdateResult(ScoreResponse result) {
 
+    }
+
+    public interface OnFragmentInteractionListener {
+        public void onFragmentInteraction(String title);
     }
 }

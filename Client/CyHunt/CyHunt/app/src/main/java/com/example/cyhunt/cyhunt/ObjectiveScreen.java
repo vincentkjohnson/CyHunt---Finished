@@ -43,6 +43,8 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     private String user;
     private int score;
 
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -68,13 +70,35 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+
+                    return;
+                }
+                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                if (mLastLocation != null) {
+                    latitude = mLastLocation.getLatitude();
+                    longitude = mLastLocation.getLongitude();
+                    Toast.makeText(getApplicationContext(), "Latitude: " + latitude + " Longitude: " +longitude, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "error: null last location", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 String selectedObjective = objectivesName.get(position);
                 for (int i = 0; i < objectivesName.size(); i++) {
                     if (objectives.get(i).getName() == selectedObjective) {
                         selObj = objectives.get(i);
                     }
                 }
-                if (distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude()) < 0.005) {
+                double dist = distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude());
+                Toast.makeText(getApplicationContext(), "dist: " + dist, Toast.LENGTH_LONG).show();
+                if (dist < 0.005) {
                     Toast.makeText(getApplicationContext(), "You found " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                     adapter.remove(selectedObjective);
                     connector.updateScore(user, selectedObjective);
@@ -90,6 +114,11 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     public void onStart() {
         super.onStart();
         connector.getObjectives();
+    }
+
+    public void setLocation(double longitude, double latitude) {
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public static double distFrom(double userLat, double userLong, double objLat, double objLong) {
@@ -114,6 +143,8 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
                 * Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(objLat));
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double dist = earthRadius * c;
+
+
 
         return dist;
 
