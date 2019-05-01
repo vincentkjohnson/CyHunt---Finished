@@ -1,4 +1,7 @@
-package cyhunter.database.entity;
+/**
+ * @author: Zechen Huang
+ */
+		package cyhunter.database.entity;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -9,12 +12,13 @@ import java.util.List;
 @Entity
 @Table(name = "usergame")
 public class UserGame {
-
+	//this is the prime key of every user game
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
+	//all that below is the Attributes
 	@ManyToOne
 	@JoinColumn
 	private User user;

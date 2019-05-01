@@ -1,3 +1,6 @@
+/**
+ * @author: Zechen Huang
+ */
 package cyhunter.database.entity;
 
 import javax.persistence.*;
@@ -7,11 +10,13 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 public class User {
+    //this is the prime key of every user
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    //all that below is the Attributes
     @Column(name = "user_name")
     private String username;
 
