@@ -2034,7 +2034,8 @@ int layout support_simple_spinner_dropdown_item 0x7f0c0054
 int layout wallet_test_layout 0x7f0c0055
 int menu menu_main 0x7f0d0000
 int mipmap ic_launcher 0x7f0e0000
-int mipmap ic_launcher_round 0x7f0e0001
+int mipmap ic_launcher_foreground 0x7f0e0001
+int mipmap ic_launcher_round 0x7f0e0002
 int string abc_action_bar_home_description 0x7f0f0000
 int string abc_action_bar_up_description 0x7f0f0001
 int string abc_action_menu_overflow_description 0x7f0f0002
