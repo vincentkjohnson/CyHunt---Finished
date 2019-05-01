@@ -21,7 +21,7 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
     private final String baseURL = "http://cyhunt-env.m3djxb9pkp.us-east-2.elasticbeanstalk.com:8080/";
     private final String add = baseURL + "user/add";
     private final String login = baseURL + "user/login";
-    private final String objectives = baseURL + "game/objectives";
+    private final String objectives = baseURL + "game/userobjectives";
     private final String updateScore = baseURL + "/game/updateuserscore";
     private final String dailyleaders = baseURL + "/game/dailyleaders";
     private final String weeklyleaders = baseURL + "/game/weeklyleaders";
@@ -48,11 +48,11 @@ public class ApiAuthenticationClient implements GetTask.GetResultHandler {
         task.execute(add, req.toJson(), "POST", "0");
     }
 
-    public void getObjectives() {
+    public void getObjectives(String username) {
         gettingObjectives = true;
         gettingLeaderboard = false;
         GetTask task = new GetTask(ApiAuthenticationClient.this);
-        task.execute(objectives, "", "GET", "1");
+        task.execute(objectives + "/" + username, "", "GET", "1");
     }
 
     public void updateScore(String username, String location) {

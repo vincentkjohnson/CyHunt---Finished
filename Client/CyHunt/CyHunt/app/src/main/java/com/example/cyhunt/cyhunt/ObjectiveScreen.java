@@ -54,12 +54,11 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective_screen);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        connector.getObjectives();
+        parent = this;
 
         user = (String)getIntent().getExtras().get("username");
         final String username = user;
-        parent = this;
+        connector.getObjectives(user);
 
         this.setTitle("Score: " + score);
 
