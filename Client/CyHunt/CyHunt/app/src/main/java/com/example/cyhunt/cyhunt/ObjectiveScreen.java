@@ -1,12 +1,12 @@
 package com.example.cyhunt.cyhunt;
 
 import android.Manifest;
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
@@ -39,28 +41,31 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     private double longitude = -93.64999;
     private double latitude = 42.02595;
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+    private Location mLocation;
+    private com.google.android.gms.location.LocationListener listener;
+    private LocationRequest mLocationRequest;
+    private LocationManager mlocationManager;
     private String user;
     private int score;
-
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective_screen);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         user = (String)getIntent().getExtras().get("username");
         final String username = user;
         parent = this;
 
         this.setTitle("Score: " + score);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }
+
+        mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         listView = (ListView) findViewById(R.id.listview);
         final List<String> objectivesName = new ArrayList<>();
@@ -70,35 +75,13 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-
-                    return;
-                }
-                mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                if (mLastLocation != null) {
-                    latitude = mLastLocation.getLatitude();
-                    longitude = mLastLocation.getLongitude();
-                    Toast.makeText(getApplicationContext(), "Latitude: " + latitude + " Longitude: " +longitude, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "error: null last location", Toast.LENGTH_LONG).show();
-                    return;
-                }
                 String selectedObjective = objectivesName.get(position);
                 for (int i = 0; i < objectivesName.size(); i++) {
                     if (objectives.get(i).getName() == selectedObjective) {
                         selObj = objectives.get(i);
                     }
                 }
-                double dist = distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude());
-                Toast.makeText(getApplicationContext(), "dist: " + dist, Toast.LENGTH_LONG).show();
-                if (dist < 0.005) {
+                if (distFrom(latitude, longitude, selObj.getLatitude(), selObj.getLongitude()) < 0.005) {
                     Toast.makeText(getApplicationContext(), "You found " + selectedObjective + "!", Toast.LENGTH_LONG).show();
                     adapter.remove(selectedObjective);
                     connector.updateScore(user, selectedObjective);
@@ -114,11 +97,13 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     public void onStart() {
         super.onStart();
         connector.getObjectives();
+        mGoogleApiClient.connect();
     }
 
-    public void setLocation(double longitude, double latitude) {
-        this.longitude = longitude;
-        this.latitude = latitude;
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
     }
 
     public static double distFrom(double userLat, double userLong, double objLat, double objLong) {
@@ -143,8 +128,6 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
                 * Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(objLat));
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double dist = earthRadius * c;
-
-
 
         return dist;
 
@@ -220,11 +203,31 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            latitude = mLastLocation.getLatitude();
-            longitude = mLastLocation.getLongitude();
+
+        startLocationUpdates();
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLocation == null) {
+            startLocationUpdates();
         }
+        if (mLocation != null) {
+            latitude = mLocation.getLatitude();
+            longitude = mLocation.getLongitude();
+        }
+    }
+
+    public void startLocationUpdates() {
+        mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(1000).setFastestInterval(1000);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (LocationListener) this);
     }
 
     @Override
