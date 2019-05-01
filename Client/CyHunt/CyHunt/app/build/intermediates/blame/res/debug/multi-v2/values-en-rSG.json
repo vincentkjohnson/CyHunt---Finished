@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\Riku Morishima\\Desktop\\School\\CS319 Android Development\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rSG\\values-en-rSG.xml",
+            "outputFile": "C:\\Users\\dream\\Desktop\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-en-rSG\\values-en-rSG.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Riku Morishima\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-wallet-12.0.1.aar\\8afdffda2b3dfcc8403d062e43f8734a\\res\\values-en-rSG\\values.xml",
+                    "source": "C:\\Users\\dream\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-wallet-12.0.1.aar\\a46a71c8fc132141ba774ab8c052dc92\\res\\values-en-rSG\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",

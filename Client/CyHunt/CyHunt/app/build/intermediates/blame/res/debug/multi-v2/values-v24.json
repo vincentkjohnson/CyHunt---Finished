@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\Riku Morishima\\Desktop\\School\\CS319 Android Development\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
+            "outputFile": "C:\\Users\\dream\\Desktop\\group-19\\Client\\CyHunt\\CyHunt\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-v24\\values-v24.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Riku Morishima\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\c399feb6c883783291c497c7b48bfd7a\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\dream\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\11ab046710fd786841a2dc0035fb4929\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Riku Morishima\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\27bef19bb5a897c17d1ee0db8e57b72f\\res\\values-v24\\values-v24.xml",
+                    "source": "C:\\Users\\dream\\.gradle\\caches\\transforms-1\\files-1.1\\support-media-compat-26.1.0.aar\\206efc9a215c2a04e670a3364bc1ecde\\res\\values-v24\\values-v24.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",

@@ -1,12 +1,11 @@
 package com.example.cyhunt.cyhunt;
 
 import android.Manifest;
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +21,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
@@ -39,7 +40,10 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     private double longitude = -93.64999;
     private double latitude = 42.02595;
     private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
+    private Location mLocation;
+    private com.google.android.gms.location.LocationListener listener;
+    private LocationRequest mLocationRequest;
+    private LocationManager mlocationManager;
     private String user;
     private int score;
 
@@ -54,11 +58,12 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
 
         this.setTitle("Score: " + score);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }
+
+        mlocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         listView = (ListView) findViewById(R.id.listview);
         final List<String> objectivesName = new ArrayList<>();
@@ -90,6 +95,13 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
     public void onStart() {
         super.onStart();
         connector.getObjectives();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
     }
 
     public static double distFrom(double userLat, double userLong, double objLat, double objLong) {
@@ -189,11 +201,31 @@ public class ObjectiveScreen extends AppCompatActivity implements ApiAuthenticat
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            latitude = mLastLocation.getLatitude();
-            longitude = mLastLocation.getLongitude();
+
+        startLocationUpdates();
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLocation == null) {
+            startLocationUpdates();
         }
+        if (mLocation != null) {
+            latitude = mLocation.getLatitude();
+            longitude = mLocation.getLongitude();
+        }
+    }
+
+    public void startLocationUpdates() {
+        mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY).setInterval(1000).setFastestInterval(1000);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, (LocationListener) this);
     }
 
     @Override

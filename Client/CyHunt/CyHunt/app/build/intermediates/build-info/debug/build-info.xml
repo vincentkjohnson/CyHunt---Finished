@@ -1,48 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <instant-run
     abi="x86"
-    api-level="28"
-    build-mode="COLD"
+    api-level="25"
+    build-mode="FULL"
     density="420dpi"
     format="10"
-    ir-eligibility="COMPATIBLE"
     plugin-version="3.3.2"
-    timestamp="1556655689732"
+    timestamp="1556676147092"
     token="9008484561172236732"
-    verifier="COLD_SWAP_REQUESTED" >
+    verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="409" />
+        duration="5519" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="59" />
+        duration="3912" />
     <task
         name="verifier"
-        duration="6" />
+        duration="1975" />
 
     <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
+        type="SPLIT_MAIN" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
+        type="SPLIT" />
+    <artifact
         location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+        type="SPLIT" />
+    <artifact
+        location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
         type="SPLIT" />
 
     <build
         build-mode="FULL"
-        timestamp="1556652589044"
+        timestamp="1556676147092"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
-            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
             type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\dream\Desktop\group-19\Client\CyHunt\CyHunt\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
+            type="SPLIT_MAIN" />
         <artifact
             location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_4.apk"
             type="SPLIT" />
         <artifact
             location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
-            type="SPLIT" />
-        <artifact
-            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
             type="SPLIT" />
         <artifact
             location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_8.apk"
@@ -51,10 +146,16 @@
             location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_2.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
+            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\resources\instant-run\debug\resources-debug.apk"
+            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_5.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_0.apk"
+            type="SPLIT" />
+        <artifact
+            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\dep\dependencies.apk"
             type="SPLIT" />
         <artifact
             location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_3.apk"
@@ -63,22 +164,7 @@
             location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_7.apk"
             type="SPLIT" />
         <artifact
-            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_6.apk"
-            type="SPLIT" />
-        <artifact
             location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_9.apk"
-            type="SPLIT" />
-        <artifact
-            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\instant-run-apk\debug\app-debug.apk"
-            type="SPLIT_MAIN" />
-    </build>
-    <build
-        build-mode="COLD"
-        ir-eligibility="COMPATIBLE"
-        timestamp="1556655689732"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="C:\Users\Riku Morishima\Desktop\School\CS319 Android Development\group-19\Client\CyHunt\CyHunt\app\build\intermediates\split-apk\debug\slices\slice_1.apk"
             type="SPLIT" />
     </build>
 
