@@ -19,4 +19,6 @@ public interface IGameLogic {
     UpdateUserScoreResult updateUserScore(String username, String locationName);
 
     List<Objective> getGameObjectives();
+
+    List<Objective> getUserObjectives(String username);
 }

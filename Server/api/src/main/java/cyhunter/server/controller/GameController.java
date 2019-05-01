@@ -14,9 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @RestController
 @RequestMapping(path="/game")
@@ -81,6 +83,12 @@ public class GameController {
         }
     }
 
+    @GetMapping(path="/userobjectives/{username}", produces = "application/json")
+    @ApiResponse(code = 200, message = "Objectives retrieved")
+    public List<Objective> getUserObjectives(@PathVariable String username){
+        return this.gameLogic.getUserObjectives(username);
+    }
+
     /***
      * Gets the requesting User's weekly Score
      * @param username The Id of the User requesting the weekly score
@@ -127,6 +135,10 @@ public class GameController {
         @ApiResponse(code=200, message="Time Retrieved")
     })
     public String GetTime(){
-        return " { \"time\": " + new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()) + " }";
+        Date date = new Date();
+        DateFormat df = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+        df.setTimeZone(TimeZone.getTimeZone("CST"));
+
+        return " { \"time\": \"" + df.format(date) + "\" }";
     }
 }

@@ -22,7 +22,19 @@ public class UserGamesService {
 
     public List<UserGame> getByPoint(){return userGamesRepository.findAllByOrderByPointAsc();};
 
-    public UserGame findByUserIdAndGameDate(int userId, long date){ return userGamesRepository.findForUserAndGame(userId, date); }
+    public UserGame findByUserIdAndGameDateAndLocation(int userId, long date, int locationId){
+        UserGame result = null;
+        List<UserGame> userGames = userGamesRepository.findForUserAndGameAndLocation(userId, date);
+
+        for(UserGame game : userGames){
+            if(game.getGameLocation().getBuilding().getId() == locationId){
+                result = game;
+                break;
+            }
+        }
+
+        return result;
+    }
 
     public UserGame save(UserGame ug ) { return userGamesRepository.save(ug); }
 
